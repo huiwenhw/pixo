@@ -1,9 +1,11 @@
 const express = require("express");
+const path = require("path");
 const bodyParser = require("body-parser");
 const store = require("./store");
 const app = express();
 
-app.use(express.static("public"));
+// Serve static files from the React app
+app.use(express.static(path.join(__dirname, "client/build")));
 app.use(bodyParser.json());
 
 app.post("/createUser", (req, res) => {
@@ -26,6 +28,7 @@ app.post("/login", (req, res) => {
     });
 });
 
-app.listen(7555, () => {
-  console.log("Server running on http://localhost:7555");
+const port = process.env.PORT || 5000;
+app.listen(port, () => {
+  console.log(`Server running on http://localhost:${port}`);
 });
