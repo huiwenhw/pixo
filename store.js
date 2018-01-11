@@ -11,11 +11,23 @@ module.exports = {
       encrypted_password: hash,
       username
     });
+  },
+  authenticate({ username, password }) {
+    console.log(`Authenticating user ${username}`);
+    return knex("user")
+      .where({ username })
+      .then(([user]) => {
+        if (!user) return { success: false };
+        const { hash } = saltHashPassword({
+          password,
+          salt: user.salt
+        });
+        return { success: hash === user.encrypted_password };
+      });
   }
 };
 
-function saltHashPassword(password) {
-  const salt = randomString();
+function saltHashPassword({ password, salt = randomString() }) {
   const hash = crypto.createHmac("sha512", salt).update(password);
   return {
     salt,
