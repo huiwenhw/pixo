@@ -3,13 +3,14 @@ exports.up = function(knex, Promise) {
     t.increments("id").primary();
     t.string("title").notNullable();
     t.string("description").notNullable();
+    t.string("cover").notNullable();
     t
       .integer("user_id")
       .unsigned()
       .notNullable()
       .references("id")
       .inTable("user");
-    t.timestamps(true, true);
+    t.timestamps(false, true);
   });
 };
 
