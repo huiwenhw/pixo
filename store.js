@@ -41,12 +41,20 @@ module.exports = {
         return { album_id: id };
       });
   },
+  uploadPhotos({ name, desc, path, album_id }) {
+    return knex("photos").insert({
+      name,
+      description: desc,
+      path,
+      album_id
+    });
+  },
   getAlbumId() {
     return knex("albums")
       .orderBy("id", "desc")
       .limit(1)
       .then(([album]) => {
-        console.log(album);
+        // console.log(album);
         return { album_id: album.id };
       });
   }

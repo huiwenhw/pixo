@@ -10,20 +10,20 @@ const mkdirp = require("mkdirp");
 app.use(express.static(path.join(__dirname, "client/build")));
 app.use(bodyParser.json());
 
+// Able to access req.body cause I assigned that first
+// in the formData in App.js
 const storage = multer.diskStorage({
-  // destination: __dirname + "/albums",
   destination: function(req, file, cb) {
     const newDest = `${__dirname}/albums/${req.body.user_id}/${
       req.body.album_id
     }`;
-    console.log(req.body);
+    // console.log(req.body);
     mkdirp(newDest, err => cb(err, newDest));
   },
   filename: function(req, file, cb) {
-    cb(null, `cover${path.extname(file.originalname)}`);
+    cb(null, file.originalname);
   }
 });
-
 const upload = multer({ storage });
 
 app.post("/createUser", (req, res) => {
@@ -46,7 +46,7 @@ app.post("/login", (req, res) => {
     });
 });
 app.post("/createAlbum", upload.single("file"), (req, res) => {
-  console.log(req.body);
+  // console.log(req.body);
   store
     .createAlbum({
       title: req.body.title,
@@ -59,6 +59,20 @@ app.post("/createAlbum", upload.single("file"), (req, res) => {
     .then(({ album_id }) => {
       res.status(200).send({ album_id: album_id });
     });
+});
+app.post("/uploadPhotos", upload.array("files", 10), (req, res) => {
+  console.log(req.body);
+  console.log(req.files);
+  // store
+  //   .uploadPhoto({
+  //     name: req.file.originalname,
+  //     desc: "",
+  //     path: `${__dirname}/albums/${req.body.user_id}/${req.body.album_id}/${
+  //       req.file.originalname
+  //     }`,
+  //     album_id: req.body.album_id
+  //   })
+  //   .then(() => res.sendStatus(200));
 });
 app.get("/getAlbumId", (req, res) => {
   store.getAlbumId().then(({ album_id }) => {
