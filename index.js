@@ -4,6 +4,7 @@ const bodyParser = require("body-parser");
 const store = require("./store");
 const app = express();
 const multer = require("multer");
+const multerMultiple = require("multer");
 const mkdirp = require("mkdirp");
 
 // Serve static files from the React app
@@ -14,17 +15,31 @@ app.use(bodyParser.json());
 // in the formData in App.js
 const storage = multer.diskStorage({
   destination: function(req, file, cb) {
-    const newDest = `${__dirname}/albums/${req.body.user_id}/${
-      req.body.album_id
+    const newDest = `${__dirname}/client/public/photos/${req.body.userId}/${
+      req.body.albumId
     }`;
     // console.log(req.body);
     mkdirp(newDest, err => cb(err, newDest));
   },
   filename: function(req, file, cb) {
-    cb(null, file.originalname);
+    cb(null, `cover${path.extname(file.originalname)}`);
   }
 });
 const upload = multer({ storage });
+
+const storageMultiple = multerMultiple.diskStorage({
+  destination: function(req, file, cb) {
+    const newDest = `${__dirname}/client/public/photos/${req.body.userId}/${
+      req.body.albumId
+    }`;
+    // console.log(req.body);
+    mkdirp(newDest, err => cb(err, newDest));
+  },
+  filename: function(req, file, cb) {
+    cb(null, file.originalname.replace(/\s/g, "_"));
+  }
+});
+const uploadMultiple = multerMultiple({ storageMultiple });
 
 app.post("/createUser", (req, res) => {
   store
@@ -40,45 +55,67 @@ app.post("/login", (req, res) => {
       username: req.body.username,
       password: req.body.password
     })
-    .then(({ success, user_id }) => {
-      if (success) res.status(200).send({ user_id: user_id });
+    .then(({ success, userId }) => {
+      if (success) res.status(200).send({ userId: userId });
       else res.sendStatus(401);
     });
 });
 app.post("/createAlbum", upload.single("file"), (req, res) => {
-  // console.log(req.body);
+  console.log(req.body);
+  console.log(req.file);
   store
     .createAlbum({
       title: req.body.title,
       desc: req.body.desc,
-      cover: `${__dirname}/albums/${req.body.user_id}/${
-        req.body.album_id
+      cover: `/photos/${req.body.userId}/${
+        req.body.albumId
       }/cover${path.extname(req.file.originalname)}`,
-      user_id: req.body.user_id
+      userId: req.body.userId
     })
-    .then(({ album_id }) => {
-      res.status(200).send({ album_id: album_id });
+    .then(({ albumId }) => {
+      res.status(200).send({ albumId: albumId });
     });
 });
-app.post("/uploadPhotos", upload.array("files", 10), (req, res) => {
+app.post("/uploadPhotos", uploadMultiple.array("files", 10), (req, res) => {
   console.log(req.body);
   console.log(req.files);
-  let user_id = req.body.user_id;
-  let album_id = req.body.album_id;
+  let userId = req.body.userId;
+  let albumId = req.body.albumId;
   let photos = req.files.map(file => {
+    let filename = file.originalname.replace(/\s/g, "_");
     return {
-      name: file.originalname,
+      name: filename,
       description: "",
-      path: `${__dirname}/albums/${user_id}/${album_id}/${file.originalname}`,
-      album_id: album_id
+      path: `/photos/${userId}/${albumId}/${filename}`,
+      album_id: albumId
     };
   });
   store.uploadPhotos(photos).then(() => res.sendStatus(200));
 });
 app.get("/getAlbumId", (req, res) => {
-  store.getAlbumId().then(({ album_id }) => {
-    res.status(200).send({ album_id: album_id });
+  store.getAlbumId().then(({ albumId }) => {
+    res.status(200).send({ albumId: albumId });
   });
+});
+app.post("/albums", (req, res) => {
+  console.log(req.body);
+  store
+    .getAlbums({
+      userId: req.body.userId
+    })
+    .then(({ albums }) => {
+      res.status(200).send({ albums: albums });
+    });
+});
+app.post("/getAlbumPhotos", (req, res) => {
+  console.log(req.body);
+  store
+    .getAlbumPhotos({
+      albumId: req.body.albumId
+    })
+    .then(({ photos }) => {
+      res.status(200).send({ photos: photos });
+    });
 });
 
 const port = process.env.PORT || 5000;

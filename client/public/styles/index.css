@@ -15,19 +15,17 @@
   max-width: 400px;
   background: rgba(0, 0, 0, 0.5);
   color: white; }
-  #login-wrapper form input,
-  #login-wrapper button {
-    border: none;
-    text-align: center;
-    padding: 5px;
-    margin: 10px;
-    outline: none;
-    color: white;
-    background: transparent; }
   #login-wrapper form {
     display: flex;
     flex-direction: column; }
     #login-wrapper form input {
+      border: none;
+      text-align: center;
+      padding: 5px;
+      margin: 10px;
+      outline: none;
+      color: white;
+      background: transparent;
       border-bottom: 1px solid white; }
       #login-wrapper form input::-webkit-input-placeholder {
         color: white; }
@@ -42,7 +40,72 @@
       background-color: #19b2e0;
       border-radius: 20px;
       padding: 10px; }
-  #login-wrapper button span {
-    border-bottom: 1px dotted white; }
+  #login-wrapper button {
+    border: none;
+    text-align: center;
+    padding: 5px;
+    margin: 10px;
+    outline: none;
+    color: white;
+    background: transparent; }
+    #login-wrapper button span {
+      border-bottom: 1px dotted white; }
+
+#album-form {
+  max-width: 400px;
+  margin: auto; }
+  #album-form form {
+    display: flex;
+    flex-direction: column; }
+    #album-form form input {
+      border: none;
+      text-align: center;
+      padding: 5px;
+      margin: 10px;
+      outline: none;
+      color: black;
+      background: transparent;
+      border-bottom: 1px solid black; }
+      #album-form form input::-webkit-input-placeholder {
+        color: black; }
+      #album-form form input:-moz-placeholder {
+        color: black; }
+      #album-form form input::-moz-placeholder {
+        color: black; }
+      #album-form form input:-ms-input-placeholder {
+        color: black; }
+    #album-form form input[type="submit"] {
+      border: none;
+      background-color: lightcoral;
+      border-radius: 20px;
+      padding: 10px; }
+
+.greeting {
+  color: white;
+  margin: 0px;
+  padding: 30px;
+  background: darkgrey;
+  text-align: center;
+  font-size: 35px; }
+
+.add-button {
+  padding: 10px;
+  background: lightcoral;
+  color: white;
+  font-size: 15px;
+  outline: none;
+  border: none;
+  margin: 10px;
+  box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.3); }
+
+.photos-grid {
+  display: flex;
+  flex-wrap: wrap; }
+  .photos-grid div {
+    margin: 10px; }
+  .photos-grid img {
+    max-width: 300px; }
+  .photos-grid p {
+    margin: 0px; }
 
 /*# sourceMappingURL=index.css.map */

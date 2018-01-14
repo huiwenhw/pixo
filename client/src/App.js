@@ -2,13 +2,17 @@ import React, { Component } from "react";
 import axios from "axios";
 import CreateUserView from "./CreateUserView";
 import LoginView from "./LoginView";
-import Dropzone from "react-dropzone";
+import HomeView from "./HomeView";
+import UploadView from "./UploadView";
+import PhotoView from "./PhotoView";
 
 class App extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
+      albums: [],
+      currAlbumId: null,
       desc: "",
       error: "",
       image: null,
@@ -18,7 +22,8 @@ class App extends Component {
       title: "",
       userId: null,
       username: "",
-      view: "login"
+      view: "login",
+      toUploadPhotos: []
     };
 
     this.handleAlbumFieldsChange = this.handleAlbumFieldsChange.bind(this);
@@ -31,6 +36,22 @@ class App extends Component {
     this.handleFieldsChange = this.handleFieldsChange.bind(this);
     this.handleFileUpload = this.handleFileUpload.bind(this);
     this.handleLoginSubmit = this.handleLoginSubmit.bind(this);
+    this.handleShowAlbumClick = this.handleShowAlbumClick.bind(this);
+  }
+
+  getUserAlbums(id) {
+    axios
+      .post("/albums", {
+        userId: id
+      })
+      .then(response => {
+        console.log(response);
+        if (response.status === 200) {
+          this.setState({
+            albums: response.data.albums
+          });
+        }
+      });
   }
 
   handleAlbumFieldsChange(event) {
@@ -44,20 +65,23 @@ class App extends Component {
     this.setState({
       view: "createalbum"
     });
+    event.preventDefault();
   }
 
   handleCreateAlbumSubmit(event) {
     const data = new FormData();
-    data.append("album_id", this.state.nextAlbumId);
-    data.append("user_id", this.state.userId);
+    data.append("albumId", this.state.nextAlbumId);
+    data.append("userId", this.state.userId);
     data.append("title", this.state.title);
     data.append("desc", this.state.desc);
     data.append("file", this.state.image);
     console.log(data);
+
     axios.post("/createAlbum", data).then(response => {
       if (response.status === 200) {
+        this.getUserAlbums(this.state.userId);
         this.setState({
-          nextAlbumId: response.data.album_id + 1,
+          nextAlbumId: response.data.albumId + 1,
           view: "home"
         });
       }
@@ -92,7 +116,8 @@ class App extends Component {
   handleDrop(files) {
     let areImages = true;
     for (let i in files) {
-      if (files[i].name.match(/\.!(jpg|jpeg|png|gif)$/)) {
+      let name = files[i].name.toLowerCase();
+      if (name.match(/\.!(jpg|jpeg|png|gif)$/)) {
         this.setState({
           error: "Only image files are allowed!"
         });
@@ -102,21 +127,26 @@ class App extends Component {
     }
     if (areImages) {
       this.setState({
-        photos: files
+        toUploadPhotos: files
       });
     }
   }
 
   handleDropSubmit(event) {
     const data = new FormData();
-    data.append("album_id", this.state.nextAlbumId);
-    data.append("user_id", this.state.userId);
-    for (let i in this.state.photos) {
-      data.append("files", this.state.photos[i]);
+    data.append("albumId", this.state.nextAlbumId - 1);
+    data.append("userId", this.state.userId);
+    for (let i in this.state.toUploadPhotos) {
+      data.append("files", this.state.toUploadPhotos[i]);
     }
-    // data.append("file", this.state.photos);
     console.log(data);
     axios.post("/uploadPhotos", data).then(response => {
+      if (response.status === 200) {
+        this.handleShowAlbumClick(this.state.currUser);
+        this.setState({
+          toUploadPhotos: []
+        });
+      }
       console.log(response);
     });
     event.preventDefault();
@@ -131,7 +161,8 @@ class App extends Component {
 
   handleFileUpload(event) {
     let file = event.target.files[0];
-    if (file.name.match(/\.(jpg|jpeg|png|gif)$/)) {
+    let name = file.name.toLowerCase();
+    if (name.match(/\.(jpg|jpeg|png|gif)$/)) {
       console.log(file);
       this.setState({
         image: file
@@ -141,6 +172,7 @@ class App extends Component {
         error: "Only image files are allowed!"
       });
     }
+    event.preventDefault();
   }
 
   handleLoginSubmit(event) {
@@ -151,9 +183,10 @@ class App extends Component {
       })
       .then(response => {
         if (response.status === 200) {
+          this.getUserAlbums(response.data.userId);
           this.setState({
             currUser: this.state.username,
-            userId: response.data.user_id,
+            userId: response.data.userId,
             view: "home"
           });
         }
@@ -162,11 +195,27 @@ class App extends Component {
     axios.get("/getAlbumId").then(response => {
       if (response.status === 200) {
         this.setState({
-          nextAlbumId: response.data.album_id
+          nextAlbumId: response.data.albumId
         });
       }
     });
     event.preventDefault();
+  }
+
+  handleShowAlbumClick(id) {
+    console.log(`id ${id}`);
+    axios
+      .post("/getAlbumPhotos", {
+        albumId: id
+      })
+      .then(response => {
+        console.log(response);
+        this.setState({
+          view: "photos",
+          currAlbumId: id,
+          photos: response.data.photos
+        });
+      });
   }
 
   render() {
@@ -179,6 +228,9 @@ class App extends Component {
             handleCreateUserButton={this.handleCreateUserButton}
           />
         )}
+        {this.state.view !== "login" && (
+          <p className="greeting"> Hello {this.state.currUser}! </p>
+        )}
         {this.state.view === "createuser" && (
           <CreateUserView
             handleFieldsChange={this.handleFieldsChange}
@@ -186,49 +238,28 @@ class App extends Component {
           />
         )}
         {this.state.view === "home" && (
-          <div>
-            Hi, {this.state.currUser}
-            <input
-              type="button"
-              value="+ Add album"
-              onClick={this.handleCreateAlbumClick}
-            />
-          </div>
+          <HomeView
+            albums={this.state.albums}
+            currUser={this.state.currUser}
+            handleCreateAlbumClick={this.handleCreateAlbumClick}
+            handleShowAlbumClick={this.handleShowAlbumClick}
+          />
         )}
         {this.state.view === "createalbum" && (
-          <div>
-            <form onSubmit={this.handleCreateAlbumSubmit}>
-              <input
-                type="text"
-                name="title"
-                placeholder="Album Title"
-                onChange={this.handleAlbumFieldsChange}
-              />
-              <input
-                type="text"
-                name="desc"
-                placeholder="Album Description"
-                onChange={this.handleAlbumFieldsChange}
-              />
-              <input
-                type="file"
-                name="image"
-                onChange={this.handleFileUpload}
-              />
-              <input type="submit" value="Add Album" />
-            </form>
-            <form onSubmit={this.handleDropSubmit}>
-              <Dropzone onDrop={this.handleDrop} multiple accept="image/*">
-                <p>Drop your files or click here to upload</p>
-              </Dropzone>
-              <ul>
-                {this.state.photos.map((image, i) => {
-                  return <li key={i}> {image.name} </li>;
-                })}
-              </ul>
-              <input type="submit" value="Submit photos" />
-            </form>
-          </div>
+          <UploadView
+            currUser={this.state.currUser}
+            handleCreateAlbumSubmit={this.handleCreateAlbumSubmit}
+            handleAlbumFieldsChange={this.handleAlbumFieldsChange}
+            handleFileUpload={this.handleFileUpload}
+          />
+        )}
+        {this.state.view === "photos" && (
+          <PhotoView
+            handleDropSubmit={this.handleDropSubmit}
+            handleDrop={this.handleDrop}
+            toUploadPhotos={this.state.toUploadPhotos}
+            photos={this.state.photos}
+          />
         )}
       </div>
     );

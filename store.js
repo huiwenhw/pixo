@@ -23,22 +23,22 @@ module.exports = {
           password,
           salt: user.salt
         });
-        return { success: hash === user.encrypted_password, user_id: user.id };
+        return { success: hash === user.encrypted_password, userId: user.id };
       });
   },
-  createAlbum({ title, desc, cover, user_id }) {
-    console.log(`creating album ${title}, ${desc}, ${cover}, ${user_id}`);
+  createAlbum({ title, desc, cover, userId }) {
+    console.log(`creating album ${title}, ${desc}, ${cover}, ${userId}`);
     return knex("albums")
       .insert({
         title,
         description: desc,
         cover,
-        user_id
+        user_id: userId
       })
       .returning("id")
       .then(([id]) => {
         console.log(`album ${id}`);
-        return { album_id: id };
+        return { albumId: id };
       });
   },
   uploadPhotos(photos) {
@@ -49,8 +49,31 @@ module.exports = {
       .orderBy("id", "desc")
       .limit(1)
       .then(([album]) => {
-        // console.log(album);
-        return { album_id: album.id };
+        console.log("get album id");
+        console.log(album);
+        if (album) {
+          return { albumId: album.id };
+        } else {
+          return { albumId: 1 };
+        }
+      });
+  },
+  getAlbums({ userId }) {
+    return knex("albums")
+      .where("user_id", userId)
+      .select("id", "title", "description", "cover")
+      .then(res => {
+        console.log(res);
+        return { albums: res };
+      });
+  },
+  getAlbumPhotos({ albumId }) {
+    return knex("photos")
+      .where("album_id", albumId)
+      .select("id", "name", "description", "path")
+      .then(res => {
+        console.log(res);
+        return { photos: res };
       });
   }
 };

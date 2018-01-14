@@ -4,7 +4,17 @@
   box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.3);
 }
 
-@mixin placeholder {
+@mixin input-button-styles($color) {
+  border: none;
+  text-align: center;
+  padding: 5px;
+  margin: 10px;
+  outline: none;
+  color: $color;
+  background: transparent;
+}
+
+@mixin placeholder() {
   &::-webkit-input-placeholder {@content}
   &:-moz-placeholder           {@content}
   &::-moz-placeholder          {@content}
@@ -29,24 +39,15 @@
   max-width: 400px;
   background: rgba(0, 0, 0, 0.5);
   color: white;
-  form input,
-  button {
-    border: none;
-    text-align: center;
-    padding: 5px;
-    margin: 10px;
-    outline: none;
-    color: white;
-    background: transparent;
-  }
   form {
     display: flex;
     flex-direction: column;
     input {
-      border-bottom: 1px solid white;
+      @include input-button-styles(white);
       @include placeholder {
         color: white;
       }
+      border-bottom: 1px solid white;
     }
     input[type="submit"] {
       border: none;
@@ -55,7 +56,65 @@
       padding: 10px;
     }
   }
-  button span {
+  button {
+    @include input-button-styles(white);
+    span {
     border-bottom: 1px dotted white;
+    }
+  }
+}
+
+
+// Albums view
+#album-form {
+  max-width: 400px;
+  margin: auto;
+  form {
+    display: flex;
+    flex-direction: column;
+    input {
+      @include input-button-styles(black);
+      @include placeholder {
+        color: black;
+      }
+      border-bottom: 1px solid black;
+    }
+    input[type="submit"] {
+      border: none;
+      background-color: lightcoral;
+      border-radius: 20px;
+      padding: 10px;
+    }
+  }
+}
+.greeting {
+  color: white;
+  margin: 0px;
+  padding: 30px;
+  background: darkgrey;
+  text-align: center;
+  font-size: 35px;
+}
+.add-button {
+  padding: 10px;
+  background: lightcoral;
+  color: white;
+  font-size: 15px;
+  outline: none;
+  border: none;
+  margin: 10px;
+  box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.3);
+}
+.photos-grid {
+  display: flex;
+  flex-wrap: wrap;
+  div {
+    margin: 10px;
+  }
+  img {
+    max-width: 300px;
+  }
+  p {
+    margin: 0px;
   }
 }
