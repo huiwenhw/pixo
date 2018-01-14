@@ -3,8 +3,6 @@ import axios from "axios";
 import CreateUserView from "./CreateUserView";
 import LoginView from "./LoginView";
 import Dropzone from "react-dropzone";
-// import DropzoneComponent from "./DropzoneComponent";
-import "./App.css";
 
 class App extends Component {
   constructor(props) {
@@ -26,6 +24,7 @@ class App extends Component {
     this.handleAlbumFieldsChange = this.handleAlbumFieldsChange.bind(this);
     this.handleCreateAlbumClick = this.handleCreateAlbumClick.bind(this);
     this.handleCreateAlbumSubmit = this.handleCreateAlbumSubmit.bind(this);
+    this.handleCreateUserButton = this.handleCreateUserButton.bind(this);
     this.handleCreateUserSubmit = this.handleCreateUserSubmit.bind(this);
     this.handleDrop = this.handleDrop.bind(this);
     this.handleDropSubmit = this.handleDropSubmit.bind(this);
@@ -65,6 +64,12 @@ class App extends Component {
       console.log(response);
     });
     event.preventDefault();
+  }
+
+  handleCreateUserButton() {
+    this.setState({
+      view: "createuser"
+    });
   }
 
   handleCreateUserSubmit(event) {
@@ -168,16 +173,11 @@ class App extends Component {
     return (
       <div>
         {this.state.view === "login" && (
-          <div>
-            <LoginView
-              handleLoginSubmit={this.handleLoginSubmit}
-              handleFieldsChange={this.handleFieldsChange}
-            />
-            <CreateUserView
-              handleFieldsChange={this.handleFieldsChange}
-              handleCreateUserSubmit={this.handleCreateUserSubmit}
-            />
-          </div>
+          <LoginView
+            handleLoginSubmit={this.handleLoginSubmit}
+            handleFieldsChange={this.handleFieldsChange}
+            handleCreateUserButton={this.handleCreateUserButton}
+          />
         )}
         {this.state.view === "createuser" && (
           <CreateUserView

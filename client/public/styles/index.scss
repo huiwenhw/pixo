@@ -1,0 +1,61 @@
+@mixin box-shadow() {
+  -webkit-box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.3); /* Safari 3-4, iOS 4.0.2 - 4.2, Android 2.3+ */
+  -moz-box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.3); /* Firefox 3.5 - 3.6 */
+  box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.3);
+}
+
+@mixin placeholder {
+  &::-webkit-input-placeholder {@content}
+  &:-moz-placeholder           {@content}
+  &::-moz-placeholder          {@content}
+  &:-ms-input-placeholder      {@content}  
+}
+
+#login {
+  background-image: url("../assets/background.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+#login-wrapper {
+  text-align: center;
+  width: 80%;
+  max-width: 400px;
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  form input,
+  button {
+    border: none;
+    text-align: center;
+    padding: 5px;
+    margin: 10px;
+    outline: none;
+    color: white;
+    background: transparent;
+  }
+  form {
+    display: flex;
+    flex-direction: column;
+    input {
+      border-bottom: 1px solid white;
+      @include placeholder {
+        color: white;
+      }
+    }
+    input[type="submit"] {
+      border: none;
+      background-color: #19b2e0;
+      border-radius: 20px;
+      padding: 10px;
+    }
+  }
+  button span {
+    border-bottom: 1px dotted white;
+  }
+}

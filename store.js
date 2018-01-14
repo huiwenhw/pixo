@@ -41,13 +41,8 @@ module.exports = {
         return { album_id: id };
       });
   },
-  uploadPhotos({ name, desc, path, album_id }) {
-    return knex("photos").insert({
-      name,
-      description: desc,
-      path,
-      album_id
-    });
+  uploadPhotos(photos) {
+    return knex("photos").insert(photos);
   },
   getAlbumId() {
     return knex("albums")

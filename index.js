@@ -63,16 +63,17 @@ app.post("/createAlbum", upload.single("file"), (req, res) => {
 app.post("/uploadPhotos", upload.array("files", 10), (req, res) => {
   console.log(req.body);
   console.log(req.files);
-  // store
-  //   .uploadPhoto({
-  //     name: req.file.originalname,
-  //     desc: "",
-  //     path: `${__dirname}/albums/${req.body.user_id}/${req.body.album_id}/${
-  //       req.file.originalname
-  //     }`,
-  //     album_id: req.body.album_id
-  //   })
-  //   .then(() => res.sendStatus(200));
+  let user_id = req.body.user_id;
+  let album_id = req.body.album_id;
+  let photos = req.files.map(file => {
+    return {
+      name: file.originalname,
+      description: "",
+      path: `${__dirname}/albums/${user_id}/${album_id}/${file.originalname}`,
+      album_id: album_id
+    };
+  });
+  store.uploadPhotos(photos).then(() => res.sendStatus(200));
 });
 app.get("/getAlbumId", (req, res) => {
   store.getAlbumId().then(({ album_id }) => {

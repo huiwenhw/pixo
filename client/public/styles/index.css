@@ -1,0 +1,48 @@
+#login {
+  background-image: url("../assets/background.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh; }
+
+#login-wrapper {
+  text-align: center;
+  width: 80%;
+  max-width: 400px;
+  background: rgba(0, 0, 0, 0.5);
+  color: white; }
+  #login-wrapper form input,
+  #login-wrapper button {
+    border: none;
+    text-align: center;
+    padding: 5px;
+    margin: 10px;
+    outline: none;
+    color: white;
+    background: transparent; }
+  #login-wrapper form {
+    display: flex;
+    flex-direction: column; }
+    #login-wrapper form input {
+      border-bottom: 1px solid white; }
+      #login-wrapper form input::-webkit-input-placeholder {
+        color: white; }
+      #login-wrapper form input:-moz-placeholder {
+        color: white; }
+      #login-wrapper form input::-moz-placeholder {
+        color: white; }
+      #login-wrapper form input:-ms-input-placeholder {
+        color: white; }
+    #login-wrapper form input[type="submit"] {
+      border: none;
+      background-color: #19b2e0;
+      border-radius: 20px;
+      padding: 10px; }
+  #login-wrapper button span {
+    border-bottom: 1px dotted white; }
+
+/*# sourceMappingURL=index.css.map */
