@@ -54,7 +54,7 @@ module.exports = {
         if (album) {
           return { albumId: album.id };
         } else {
-          return { albumId: 1 };
+          return { albumId: 0 };
         }
       });
   },

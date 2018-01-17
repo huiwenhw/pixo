@@ -85,23 +85,23 @@ app.get("/getAlbumId", (req, res) => {
     res.status(200).send({ albumId: albumId });
   });
 });
-app.get("/albums/:id", (req, res) => {
-  console.log("get request /albums/id");
+app.get("/:userid/albums", (req, res) => {
+  console.log("get request /:userid/albums");
   console.log(req.params);
   store
     .getAlbums({
-      userId: req.params.id
+      userId: req.params.userid
     })
     .then(({ albums }) => {
       res.status(200).send({ albums: albums });
     });
 });
-app.get("/getPhotos/:id", (req, res) => {
-  console.log("get request /getPhotos/id");
+app.get("/:albumid/getPhotos", (req, res) => {
+  console.log("get request /:albumid/getPhotos");
   console.log(`photos ${req.params}`);
   store
     .getPhotos({
-      albumId: req.params.id
+      albumId: req.params.albumid
     })
     .then(({ photos }) => {
       console.log("photos");

@@ -18,7 +18,43 @@
   &::-webkit-input-placeholder {@content}
   &:-moz-placeholder           {@content}
   &::-moz-placeholder          {@content}
-  &:-ms-input-placeholder      {@content}  
+  &:-ms-input-placeholder      {@content}
+}
+
+$lightBlue: #19b2e0;
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+}
+.greeting {
+  font-family: cursive;
+  letter-spacing: 10px;
+  color: white;
+  background-image: linear-gradient(
+      rgba(113, 113, 113, 0.3),
+      rgba(113, 113, 113, 0.3)
+    ),
+    url("../assets/header.JPG");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  text-align: center;
+  font-size: 50px;
+}
+.add-button, #home-button {
+  padding: 10px;
+  background: lightcoral;
+  color: white;
+  font-size: 15px;
+  outline: none;
+  border: none;
+  margin: 10px;
+  box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.3);
+}
+#home-button {
+  background: $lightBlue;
 }
 
 #login {
@@ -51,7 +87,7 @@
     }
     input[type="submit"] {
       border: none;
-      background-color: #19b2e0;
+      background-color: $lightBlue;
       border-radius: 20px;
       padding: 10px;
     }
@@ -59,13 +95,18 @@
   button {
     @include input-button-styles(white);
     span {
-    border-bottom: 1px dotted white;
+      border-bottom: 1px dotted white;
+    }
+    a {
+      color: white;
+      text-decoration: none;
     }
   }
 }
 
-
-// Albums view
+/*
+ * CREATEALBUM
+ */
 #album-form {
   max-width: 400px;
   margin: auto;
@@ -87,47 +128,39 @@
     }
   }
 }
-.greeting {
-  color: white;
-  margin: 0px;
-  padding: 30px;
-  background: darkgrey;
-  text-align: center;
-  font-size: 35px;
-}
-.add-button {
-  padding: 10px;
-  background: lightcoral;
-  color: white;
-  font-size: 15px;
-  outline: none;
-  border: none;
-  margin: 10px;
-  box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.3);
-}
+
+/*
+ * ALBUMS & PHOTOS
+ */
 .photos-grid {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  >div {
+  > div {
     margin: 10px;
     position: relative;
+    .album-desc {
+      margin: 0px;
+      color: white;
+      position: absolute;
+      bottom: 10px;
+      text-align: center;
+      width: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      padding: 5px;
+      box-sizing: border-box;
+    }
   }
   img {
     max-width: 300px;
   }
-  p {
-    margin: 0px;
-    color: white;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    text-align: center;
-    width: 100%;
-  }
-  .overlay {
+}
 
-  }
+/*
+ * PHOTOS
+ */
+#dropzone {
+  overflow: scroll;
+  padding: 0px 10px;
 }

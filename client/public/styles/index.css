@@ -1,3 +1,32 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif; }
+
+.greeting {
+  font-family: cursive;
+  letter-spacing: 10px;
+  color: white;
+  background-image: linear-gradient(rgba(113, 113, 113, 0.3), rgba(113, 113, 113, 0.3)), url("../assets/header.JPG");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  text-align: center;
+  font-size: 50px; }
+
+.add-button, #home-button {
+  padding: 10px;
+  background: lightcoral;
+  color: white;
+  font-size: 15px;
+  outline: none;
+  border: none;
+  margin: 10px;
+  box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.3); }
+
+#home-button {
+  background: #19b2e0; }
+
 #login {
   background-image: url("../assets/background.jpg");
   background-size: cover;
@@ -50,7 +79,13 @@
     background: transparent; }
     #login-wrapper button span {
       border-bottom: 1px dotted white; }
+    #login-wrapper button a {
+      color: white;
+      text-decoration: none; }
 
+/*
+ * CREATEALBUM
+ */
 #album-form {
   max-width: 400px;
   margin: auto; }
@@ -80,24 +115,9 @@
       border-radius: 20px;
       padding: 10px; }
 
-.greeting {
-  color: white;
-  margin: 0px;
-  padding: 30px;
-  background: darkgrey;
-  text-align: center;
-  font-size: 35px; }
-
-.add-button {
-  padding: 10px;
-  background: lightcoral;
-  color: white;
-  font-size: 15px;
-  outline: none;
-  border: none;
-  margin: 10px;
-  box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.3); }
-
+/*
+ * ALBUMS & PHOTOS
+ */
 .photos-grid {
   display: flex;
   flex-wrap: wrap;
@@ -106,16 +126,24 @@
   .photos-grid > div {
     margin: 10px;
     position: relative; }
+    .photos-grid > div .album-desc {
+      margin: 0px;
+      color: white;
+      position: absolute;
+      bottom: 10px;
+      text-align: center;
+      width: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      padding: 5px;
+      box-sizing: border-box; }
   .photos-grid img {
     max-width: 300px; }
-  .photos-grid p {
-    margin: 0px;
-    color: white;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    text-align: center;
-    width: 100%; }
+
+/*
+ * PHOTOS
+ */
+#dropzone {
+  overflow: scroll;
+  padding: 0px 10px; }
 
 /*# sourceMappingURL=index.css.map */

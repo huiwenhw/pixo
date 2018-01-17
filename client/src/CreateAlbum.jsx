@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Link, Redirect } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import axios from "axios";
 
 class CreateAlbum extends Component {
@@ -35,8 +35,8 @@ class CreateAlbum extends Component {
 
   handleCreateAlbumSubmit(event) {
     const data = new FormData();
-    data.append("albumId", this.state.nextAlbumId);
-    data.append("userId", this.state.userId);
+    data.append("albumId", this.props.match.params.albumid);
+    data.append("userId", this.props.match.params.userid);
     data.append("title", this.state.title);
     data.append("desc", this.state.desc);
     data.append("file", this.state.image);
@@ -53,7 +53,7 @@ class CreateAlbum extends Component {
 
   render() {
     if (this.state.albumsView) {
-      <Redirect to={`${this.props.match.params.userid}/albums`} />;
+      return <Redirect to={`/${this.props.match.params.userid}/albums`} />;
     }
     return (
       <div id="album">

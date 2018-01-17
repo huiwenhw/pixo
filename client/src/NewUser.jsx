@@ -16,9 +16,7 @@ class NewUser extends Component {
 
   handleFieldsChange(event) {
     let name = event.target.name;
-    this.setState({
-      [name]: event.target.value
-    });
+    this.setState({ [name]: event.target.value });
     event.preventDefault();
   }
 

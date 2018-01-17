@@ -11,7 +11,7 @@ const Main = () => {
       <Route exact path="/" component={Login} />
       <Route exact path="/newuser" component={NewUser} />
       <Route path="/:userid/albums" component={Home} />
-      <Route path="/:userid/createalbum" component={CreateAlbum} />
+      <Route path="/:userid/createalbum/:albumid" component={CreateAlbum} />
     </Switch>
   );
 };

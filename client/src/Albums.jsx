@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Link, Redirect } from "react-router-dom";
+import { Link } from "react-router-dom";
 import axios from "axios";
 
 class Albums extends Component {
@@ -7,16 +7,24 @@ class Albums extends Component {
     super(props);
 
     this.state = {
-      albums: []
+      albums: [],
+      nextAlbumId: null
     };
   }
 
   componentDidMount() {
     let id = this.props.match.params.userid;
-    axios.get(`/albums/${id}`).then(response => {
+    axios.get(`/${id}/albums`).then(response => {
       console.log(response);
       if (response.status === 200) {
         this.setState({ albums: response.data.albums });
+      }
+    });
+    axios.get("/getAlbumId").then(response => {
+      if (response.status === 200) {
+        this.setState({
+          nextAlbumId: response.data.albumId + 1
+        });
       }
     });
   }
@@ -28,7 +36,7 @@ class Albums extends Component {
           <Link to={`/${this.props.match.params.userid}/albums/${album.id}`}>
             <img src={album.cover} alt="album cover" />
             <div className="overlay" />
-            <p>
+            <p className="album-desc">
               {album.title} <br /> {album.description}
             </p>
           </Link>
@@ -37,7 +45,11 @@ class Albums extends Component {
     });
     return (
       <div id="home">
-        <Link to={`/${this.props.match.params.userid}/createalbum`}>
+        <Link
+          to={`/${this.props.match.params.userid}/createalbum/${
+            this.state.nextAlbumId
+          }`}
+        >
           <button className="add-button">+ Add album</button>
         </Link>
         <div className="photos-grid">{albumGrid}</div>
