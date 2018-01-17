@@ -3,7 +3,7 @@ import React from "react";
 const UploadView = ({
   handleCreateAlbumSubmit,
   handleAlbumFieldsChange,
-  handleFileUpload
+  handleAlbumCoverUpload
 }) => {
   return (
     <div id="album">
@@ -21,7 +21,7 @@ const UploadView = ({
             placeholder="Album Description"
             onChange={handleAlbumFieldsChange}
           />
-          <input type="file" name="image" onChange={handleFileUpload} />
+          <input type="file" name="image" onChange={handleAlbumCoverUpload} />
           <input className="add-album" type="submit" value="Add Album" />
         </form>
       </div>

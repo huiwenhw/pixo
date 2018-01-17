@@ -108,13 +108,26 @@
 .photos-grid {
   display: flex;
   flex-wrap: wrap;
-  div {
+  align-items: center;
+  justify-content: center;
+  >div {
     margin: 10px;
+    position: relative;
   }
   img {
     max-width: 300px;
   }
   p {
     margin: 0px;
+    color: white;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    width: 100%;
+  }
+  .overlay {
+
   }
 }

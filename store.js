@@ -63,15 +63,18 @@ module.exports = {
       .where("user_id", userId)
       .select("id", "title", "description", "cover")
       .then(res => {
+        console.log("get albums");
         console.log(res);
         return { albums: res };
       });
   },
-  getAlbumPhotos({ albumId }) {
+  getPhotos({ albumId }) {
+    console.log("get photos in store js " + albumId);
     return knex("photos")
       .where("album_id", albumId)
       .select("id", "name", "description", "path")
       .then(res => {
+        console.log("get photos");
         console.log(res);
         return { photos: res };
       });

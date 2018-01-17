@@ -2,10 +2,10 @@ import React from "react";
 import Dropzone from "react-dropzone";
 
 const PhotoView = ({
-  handleDropSubmit,
-  handleDrop,
-  photos,
-  toUploadPhotos
+  handleUploadPhotos,
+  handleDropPhotos,
+  toUploadPhotos,
+  photos
 }) => {
   let photoGrid = photos.map((photo, i) => {
     return (
@@ -17,8 +17,8 @@ const PhotoView = ({
 
   return (
     <div>
-      <form onSubmit={handleDropSubmit}>
-        <Dropzone onDrop={handleDrop} multiple accept="image/*">
+      <form onSubmit={handleUploadPhotos}>
+        <Dropzone onDrop={handleDropPhotos} multiple accept="image/*">
           <p>Drop your files or click here to upload</p>
         </Dropzone>
         <ul>

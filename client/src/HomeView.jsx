@@ -1,12 +1,14 @@
 import React from "react";
 
-const HomeView = ({ albums, handleCreateAlbumClick, handleShowAlbumClick }) => {
+const HomeView = ({ albums, handleCreateAlbumClick, handleAlbumClick }) => {
   let albumGrid = albums.map((album, i) => {
     return (
-      <div key={i} onClick={() => handleShowAlbumClick(album.id)}>
+      <div key={i} onClick={() => handleAlbumClick(album.id)}>
         <img src={album.cover} alt="album cover" />
-        <p> Title: {album.title} </p>
-        <p> Album: {album.description} </p>
+        <div className="overlay" />
+        <p>
+          {album.title} <br /> {album.description}
+        </p>
       </div>
     );
   });

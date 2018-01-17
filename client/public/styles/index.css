@@ -100,12 +100,22 @@
 
 .photos-grid {
   display: flex;
-  flex-wrap: wrap; }
-  .photos-grid div {
-    margin: 10px; }
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center; }
+  .photos-grid > div {
+    margin: 10px;
+    position: relative; }
   .photos-grid img {
     max-width: 300px; }
   .photos-grid p {
-    margin: 0px; }
+    margin: 0px;
+    color: white;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    width: 100%; }
 
 /*# sourceMappingURL=index.css.map */
