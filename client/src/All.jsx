@@ -6,7 +6,7 @@ import HomeView from "./HomeView";
 import UploadView from "./UploadView";
 import PhotoView from "./PhotoView";
 
-class App extends Component {
+class Main extends Component {
   constructor(props) {
     super(props);
 
@@ -259,4 +259,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default Main;
