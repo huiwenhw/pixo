@@ -10,3 +10,6 @@ Photo Gallery built using React, NodeJs, Express and MySQL
 * do `knex migrate:latest`
 * start express server: `nodemon .`
 * and in another terminal: in `/client folder`, do `yarn start` to start React
+
+Note: If you edit the index.scss file, make sure to do 
+* `yarn run sass`: this will watch the index.scss file and compile it to index.css
