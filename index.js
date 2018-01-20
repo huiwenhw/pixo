@@ -17,10 +17,13 @@ const storage = multer.diskStorage({
     const newDest = `${__dirname}/client/public/photos/${req.body.userId}/${
       req.body.albumId
     }`;
+    console.log(newDest);
     mkdirp(newDest, err => cb(err, newDest));
+    console.log(err);
   },
   filename: function(req, file, cb) {
     let filename = file.originalname.replace(/\s/g, "_");
+    console.log(filename);
     cb(null, filename);
   }
 });
