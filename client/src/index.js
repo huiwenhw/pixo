@@ -4,15 +4,9 @@ import { BrowserRouter } from "react-router-dom";
 import registerServiceWorker from "./registerServiceWorker";
 import Main from "./Main";
 
-const App = () => (
-  <div>
-    <Main />
-  </div>
-);
-
 ReactDOM.render(
   <BrowserRouter>
-    <App />
+    <Main />
   </BrowserRouter>,
   document.getElementById("root")
 );

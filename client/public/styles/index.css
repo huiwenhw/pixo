@@ -3,7 +3,10 @@ body {
   padding: 0;
   font-family: sans-serif; }
 
-.greeting {
+a {
+  text-decoration: none; }
+
+.header {
   font-family: cursive;
   letter-spacing: 10px;
   color: white;
@@ -14,134 +17,97 @@ body {
   text-align: center;
   font-size: 50px; }
 
-.add-button, #home-button {
+.btn {
   padding: 10px;
-  background: lightcoral;
   color: white;
   font-size: 15px;
   outline: none;
   border: none;
   margin: 10px;
   box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.3); }
+  .btn.nav {
+    background: #19b2e0; }
+  .btn.submit {
+    background: lightcoral; }
 
-#home-button {
-  background: #19b2e0; }
-
-#login {
-  background-image: url("../assets/background.JPG");
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center center;
+.center {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   height: 100vh; }
+  .center.login {
+    background-image: url("../assets/background.JPG");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center; }
 
-#login-wrapper {
-  text-align: center;
-  width: 80%;
-  max-width: 400px;
-  background: rgba(0, 0, 0, 0.5);
-  color: white; }
-  #login-wrapper form {
-    display: flex;
-    flex-direction: column; }
-    #login-wrapper form input {
-      border: none;
-      text-align: center;
-      padding: 5px;
-      margin: 10px;
-      outline: none;
-      color: white;
-      background: transparent;
-      border-bottom: 1px solid white; }
-      #login-wrapper form input::-webkit-input-placeholder {
-        color: white; }
-      #login-wrapper form input:-moz-placeholder {
-        color: white; }
-      #login-wrapper form input::-moz-placeholder {
-        color: white; }
-      #login-wrapper form input:-ms-input-placeholder {
-        color: white; }
-    #login-wrapper form input[type="submit"] {
-      border: none;
-      background-color: #19b2e0;
-      border-radius: 20px;
-      padding: 10px; }
-  #login-wrapper button {
-    border: none;
-    text-align: center;
-    padding: 5px;
-    margin: 10px;
-    outline: none;
-    color: white;
-    background: transparent; }
-    #login-wrapper button span {
-      border-bottom: 1px dotted white; }
-    #login-wrapper button a {
-      color: white;
-      text-decoration: none; }
-
-/*
- * CREATEALBUM
- */
-#album-form {
+.form-wrapper {
   max-width: 400px;
   margin: auto; }
-  #album-form form {
-    display: flex;
-    flex-direction: column; }
-    #album-form form input {
+  .form-wrapper.login {
+    text-align: center;
+    width: 80%;
+    background: rgba(255, 255, 255, 0.8); }
+    .form-wrapper.login button {
       border: none;
       text-align: center;
       padding: 5px;
       margin: 10px;
       outline: none;
       color: black;
-      background: transparent;
-      border-bottom: 1px solid black; }
-      #album-form form input::-webkit-input-placeholder {
-        color: black; }
-      #album-form form input:-moz-placeholder {
-        color: black; }
-      #album-form form input::-moz-placeholder {
-        color: black; }
-      #album-form form input:-ms-input-placeholder {
-        color: black; }
-    #album-form form input[type="submit"] {
-      border: none;
-      background-color: lightcoral;
-      border-radius: 20px;
-      padding: 10px; }
+      background: transparent; }
+      .form-wrapper.login button span {
+        border-bottom: 1px dotted black; }
+
+.form {
+  display: flex;
+  flex-direction: column; }
+  .form input {
+    border: none;
+    text-align: center;
+    padding: 5px;
+    margin: 10px;
+    outline: none;
+    color: black;
+    background: transparent;
+    border-bottom: 1px solid black; }
+    .form input::-webkit-input-placeholder {
+      color: black; }
+    .form input:-moz-placeholder {
+      color: black; }
+    .form input::-moz-placeholder {
+      color: black; }
+    .form input:-ms-input-placeholder {
+      color: black; }
+  .form .submit {
+    border: none;
+    color: white; }
 
 /*
  * ALBUMS & PHOTOS
  */
-.photos-grid {
+.grid {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: center; }
-  .photos-grid > div {
+  .grid > div {
     margin: 10px;
     position: relative; }
-    .photos-grid > div .album-desc {
-      margin: 0px;
-      color: white;
-      position: absolute;
-      bottom: 10px;
-      text-align: center;
-      width: 100%;
-      background: rgba(0, 0, 0, 0.7);
-      padding: 5px;
-      box-sizing: border-box; }
-  .photos-grid img {
+  .grid .text-overlay {
+    margin: 0px;
+    color: white;
+    position: absolute;
+    bottom: 10px;
+    text-align: center;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    padding: 5px;
+    box-sizing: border-box; }
+  .grid img {
     max-width: 300px; }
 
-/*
- * PHOTOS
- */
 #dropzone {
   overflow: scroll;
   padding: 0px 10px; }

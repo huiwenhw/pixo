@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
 import Dropzone from "react-dropzone";
-import { Link } from "react-router-dom";
+import Button from "./Button";
 
 class Photos extends Component {
   constructor(props) {
@@ -82,10 +82,12 @@ class Photos extends Component {
     });
     return (
       <div>
-        <Link to={`/${this.props.match.params.userid}/albums`}>
-          <button id="home-button">Home</button>
-        </Link>
-        <div className="photos-grid">
+        <Button
+          link={`/${this.props.match.params.userid}/albums`}
+          btnType="nav"
+          name="Home"
+        />
+        <div className="grid">
           <form onSubmit={this.handleUploadPhotos}>
             <Dropzone
               id="dropzone"
@@ -100,7 +102,7 @@ class Photos extends Component {
                 })}
               </ul>
             </Dropzone>
-            <input className="add-button" type="submit" value="Add photos" />
+            <input className="btn submit" type="submit" value="Add photos" />
           </form>
           {photoGrid}
         </div>

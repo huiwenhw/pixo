@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import Button from "./Button";
 
 class Albums extends Component {
   constructor(props) {
@@ -36,7 +37,7 @@ class Albums extends Component {
           <Link to={`/${this.props.match.params.userid}/albums/${album.id}`}>
             <img src={album.cover} alt="album cover" />
             <div className="overlay" />
-            <p className="album-desc">
+            <p className="text-overlay">
               {album.title} <br /> {album.description}
             </p>
           </Link>
@@ -45,14 +46,14 @@ class Albums extends Component {
     });
     return (
       <div id="home">
-        <Link
-          to={`/${this.props.match.params.userid}/createalbum/${
+        <Button
+          link={`/${this.props.match.params.userid}/albums/create/${
             this.state.nextAlbumId
           }`}
-        >
-          <button className="add-button">+ Add album</button>
-        </Link>
-        <div className="photos-grid">{albumGrid}</div>
+          btnType="nav"
+          name="Add Album"
+        />
+        <div className="grid">{albumGrid}</div>
       </div>
     );
   }

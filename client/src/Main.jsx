@@ -1,8 +1,7 @@
 import React from "react";
 import { Switch, Route } from "react-router-dom";
-import CreateAlbum from "./CreateAlbum";
-import Login from "./Login";
 import Home from "./Home";
+import Login from "./Login";
 import NewUser from "./NewUser";
 
 const Main = () => {
@@ -11,7 +10,6 @@ const Main = () => {
       <Route exact path="/" component={Login} />
       <Route exact path="/newuser" component={NewUser} />
       <Route path="/:userid/albums" component={Home} />
-      <Route path="/:userid/createalbum/:albumid" component={CreateAlbum} />
     </Switch>
   );
 };

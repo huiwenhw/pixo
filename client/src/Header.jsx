@@ -1,7 +1,7 @@
 import React from "react";
 
 const Navbar = () => {
-  return <div className="greeting">Pixo</div>;
+  return <div className="header">Pixo</div>;
 };
 
 export default Navbar;

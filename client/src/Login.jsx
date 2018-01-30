@@ -43,9 +43,9 @@ class Login extends Component {
       return <Redirect to={`/${this.state.userId}/albums`} />;
     }
     return (
-      <div id="login">
-        <div id="login-wrapper">
-          <form onSubmit={this.handleLoginSubmit}>
+      <div className="center login">
+        <div className="form-wrapper login">
+          <form className="form" onSubmit={this.handleLoginSubmit}>
             <h1> Hello </h1>
             <input
               type="text"
@@ -59,7 +59,7 @@ class Login extends Component {
               placeholder="password"
               onChange={this.handleFieldsChange}
             />
-            <input type="submit" value="Login" />
+            <input className="btn submit" type="submit" value="Login" />
           </form>
           <button>
             <Link to={"/newuser"}>

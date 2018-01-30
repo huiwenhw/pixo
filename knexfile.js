@@ -1,4 +1,8 @@
 module.exports = {
   client: "mysql",
-  connection: process.env.JAWSDB_URL
+  connection: {
+    user: "root",
+    password: "password",
+    database: "pixo_database"
+  }
 };

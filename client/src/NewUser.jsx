@@ -38,9 +38,9 @@ class NewUser extends Component {
       return <Redirect to={"/"} />;
     }
     return (
-      <div id="login">
-        <div id="login-wrapper">
-          <form onSubmit={this.handleNewUserSubmit}>
+      <div className="center login">
+        <div className="form-wrapper login">
+          <form className="form" onSubmit={this.handleNewUserSubmit}>
             <h1> Welcome </h1>
             <input
               type="text"
@@ -54,7 +54,7 @@ class NewUser extends Component {
               placeholder="password"
               onChange={this.handleFieldsChange}
             />
-            <input type="submit" value="Sign Up" />
+            <input className="btn submit" type="submit" value="Sign Up" />
           </form>
         </div>
       </div>

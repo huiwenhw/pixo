@@ -19,7 +19,6 @@ const storage = multer.diskStorage({
     }`;
     console.log(newDest);
     mkdirp(newDest, err => cb(err, newDest));
-    console.log(err);
   },
   filename: function(req, file, cb) {
     let filename = file.originalname.replace(/\s/g, "_");

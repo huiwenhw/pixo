@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Redirect } from "react-router-dom";
 import axios from "axios";
+import Button from "./Button";
 
 class CreateAlbum extends Component {
   constructor(props) {
@@ -56,9 +57,14 @@ class CreateAlbum extends Component {
       return <Redirect to={`/${this.props.match.params.userid}/albums`} />;
     }
     return (
-      <div id="album">
-        <div id="album-form">
-          <form onSubmit={this.handleCreateAlbumSubmit}>
+      <div>
+        <Button
+          link={`/${this.props.match.params.userid}/albums`}
+          btnType="nav"
+          name="Home"
+        />
+        <div className="form-wrapper">
+          <form className="form" onSubmit={this.handleCreateAlbumSubmit}>
             <input
               type="text"
               name="title"
@@ -76,7 +82,7 @@ class CreateAlbum extends Component {
               name="image"
               onChange={this.handleAlbumCoverUpload}
             />
-            <input className="add-album" type="submit" value="Add Album" />
+            <input className="btn submit" type="submit" value="Add Album" />
           </form>
         </div>
       </div>
