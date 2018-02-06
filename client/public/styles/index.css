@@ -34,6 +34,7 @@ a {
   outline: none;
   border: 1px solid black;
   margin: 10px;
+  cursor: pointer;
   -webkit-box-shadow: 1px 1px 0px rgba(0, 0, 0, 0.3);
   /* Safari 3-4, iOS 4.0.2 - 4.2, Android 2.3+ */
   -moz-box-shadow: 1px 1px 0px rgba(0, 0, 0, 0.3);

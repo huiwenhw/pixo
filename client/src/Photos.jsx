@@ -69,7 +69,7 @@ class Photos extends Component {
       return (
         <div key={i}>
           <Image publicId={photo.path} width={this.state.width} />
-          <p className="image title"> {photo.name} </p>
+          <p className="image desc"> {photo.name} </p>
         </div>
       );
     });
