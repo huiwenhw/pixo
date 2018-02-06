@@ -27,9 +27,13 @@ class CreateAlbum extends Component {
       },
       (error, result) => {
         console.log(result);
-        this.setState({
-          cover: result[0].public_id
-        });
+        if (result) {
+          this.setState({
+            cover: result[0].public_id
+          });
+        } else {
+          console.log(error);
+        }
       }
     );
     event.preventDefault();
@@ -71,6 +75,7 @@ class CreateAlbum extends Component {
         />
         <div className="form-wrapper">
           <form className="form" onSubmit={this.handleCreateAlbumSubmit}>
+            <p className="title"> CREATE ALBUM </p>
             <input
               type="text"
               name="title"
@@ -83,13 +88,15 @@ class CreateAlbum extends Component {
               placeholder="Album Description"
               onChange={this.handleAlbumFieldsChange}
             />
-            <button
+            <input
+              type="button"
               className="upload-button"
               onClick={this.handleAlbumCoverUpload}
-            >
-              Add Image
+              value="Add Image"
+            />
+            <button className="btn submit" type="submit">
+              Add Album
             </button>
-            <input className="btn submit" type="submit" value="Add Album" />
           </form>
         </div>
       </div>

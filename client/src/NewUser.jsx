@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Redirect } from "react-router-dom";
 import axios from "axios";
+import Header from "./Header";
 
 class NewUser extends Component {
   constructor(props) {
@@ -41,7 +42,7 @@ class NewUser extends Component {
       <div className="center login">
         <div className="form-wrapper login">
           <form className="form" onSubmit={this.handleNewUserSubmit}>
-            <h1> Welcome </h1>
+            <Header />
             <input
               type="text"
               name="username"
@@ -54,7 +55,9 @@ class NewUser extends Component {
               placeholder="password"
               onChange={this.handleFieldsChange}
             />
-            <input className="btn submit" type="submit" value="Sign Up" />
+            <button className="btn submit" type="submit">
+              Sign Up
+            </button>
           </form>
         </div>
       </div>

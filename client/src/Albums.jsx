@@ -38,7 +38,7 @@ class Albums extends Component {
         <div key={i}>
           <Link to={`/${this.props.match.params.userid}/albums/${album.id}`}>
             <Image publicId={album.cover} width={this.state.width} />
-            <p className="image title">
+            <p className="image desc">
               {album.title} | {album.description}
             </p>
           </Link>

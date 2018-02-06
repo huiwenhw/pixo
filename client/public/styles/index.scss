@@ -1,7 +1,7 @@
 @mixin box-shadow() {
-  -webkit-box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.3); /* Safari 3-4, iOS 4.0.2 - 4.2, Android 2.3+ */
-  -moz-box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.3); /* Firefox 3.5 - 3.6 */
-  box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.3);
+  -webkit-box-shadow: 1px 1px 0px rgba(0, 0, 0, 0.3); /* Safari 3-4, iOS 4.0.2 - 4.2, Android 2.3+ */
+  -moz-box-shadow: 1px 1px 0px rgba(0, 0, 0, 0.3); /* Firefox 3.5 - 3.6 */
+  box-shadow: 1px 1px 0px rgba(0, 0, 0, 0.3);
 }
 
 @mixin input-styles($color) {
@@ -12,6 +12,7 @@
   outline: none;
   color: $color;
   background: transparent;
+  border-bottom: 1px solid $color;
 }
 
 @mixin placeholder($color) {
@@ -30,6 +31,7 @@
 }
 
 $lightBlue: #19b2e0;
+$darkGrey: #7f7f7f;
 
 body {
   margin: 0;
@@ -41,43 +43,41 @@ a {
   text-decoration: none;
 }
 
+.title {
+  font-size: 20px;
+  font-weight: lighter;
+  letter-spacing: 5px;
+}
+
+.container {
+  width: 95%;
+  margin: 30px auto;
+}
+
 .image {
-  &.title {
-    color: #888;
+  &.desc {
+    color: $darkGrey;
   }
 }
 
 .header {
   font-family: cursive;
   letter-spacing: 10px;
-  color: white;
-  background-image: linear-gradient(
-      rgba(113, 113, 113, 0.3),
-      rgba(113, 113, 113, 0.3)
-    ),
-    url("../assets/header.JPG");
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center center;
+  color: black;
   text-align: center;
   font-size: 50px;
 }
 
 .btn {
   padding: 10px;
-  color: white;
+  color: black;
+  background: transparent;
   font-size: 15px;
+  letter-spacing: 2px;
   outline: none;
-  border: none;
+  border: 1px solid black;
   margin: 10px;
-  box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.3);
-
-  &.nav {
-    background: $lightBlue;
-  }
-  &.submit {
-    background: lightcoral;
-  }
+  @include box-shadow();
 }
 
 .center {
@@ -85,44 +85,36 @@ a {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100vh;
-
-  &.login {
-    background-image: url("../assets/background.JPG");
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center center;
-  }
+  height: calc(100vh - 80px);
 }
 
 .form-wrapper {
-  max-width: 400px;
   margin: auto;
+  width: 80%;
+  max-width: 400px;
+  text-align: center;
 
-  &.login {
-    text-align: center;
-    width: 80%;
-    background: rgba(255, 255, 255, 0.8);
-    button {
+  .form {
+    display: flex;
+    flex-direction: column;
+    input {
       @include input-styles(black);
-      span {
-        border-bottom: 1px dotted black;
-      }
+      @include placeholder($darkGrey);
+    }
+    .upload-button {
+      color: $darkGrey;
     }
   }
-}
 
-.form {
-  display: flex;
-  flex-direction: column;
-  input {
-    @include input-styles(black);
-    @include placeholder(black);
-    border-bottom: 1px solid black;
-  }
-  .submit {
-    border: none;
-    color: white;
+  a {
+    font-size: 13px;
+    font-style: italic;
+    color: $darkGrey;
+    font-weight: lighter;
+
+    span {
+      border-bottom: 1px dotted black;
+    }
   }
 }
 
@@ -134,11 +126,10 @@ a {
   flex-wrap: wrap;
   align-items: flex-end;
   justify-content: center;
-  width: 90%;
-  margin: auto;
+  margin-top: 40px;
 
   > div {
-    margin: 10px;
+    margin: 0px 20px;
     position: relative;
   }
 }

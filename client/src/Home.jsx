@@ -7,7 +7,7 @@ import Photos from "./Photos";
 
 const Home = () => {
   return (
-    <div>
+    <div className="container">
       <Header />
       <Switch>
         <Route exact path="/:userid/albums" component={Albums} />

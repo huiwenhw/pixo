@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Link, Redirect } from "react-router-dom";
 import axios from "axios";
+import Header from "./Header";
 
 class Login extends Component {
   constructor(props) {
@@ -46,7 +47,7 @@ class Login extends Component {
       <div className="center login">
         <div className="form-wrapper login">
           <form className="form" onSubmit={this.handleLoginSubmit}>
-            <h1> Hello </h1>
+            <Header />
             <input
               type="text"
               name="username"
@@ -59,13 +60,13 @@ class Login extends Component {
               placeholder="password"
               onChange={this.handleFieldsChange}
             />
-            <input className="btn submit" type="submit" value="Login" />
+            <button className="btn" type="submit">
+              Login
+            </button>
           </form>
-          <button>
-            <Link to={"/newuser"}>
-              Don't have an account yet? <span>Sign Up</span>
-            </Link>
-          </button>
+          <Link to={"/newuser"}>
+            Don't have an account yet? <span>Sign Up</span>
+          </Link>
         </div>
       </div>
     );
