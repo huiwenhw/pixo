@@ -17,14 +17,21 @@ class CreateAlbum extends Component {
   }
 
   handleAlbumCoverUpload(event) {
-    let file = event.target.files[0];
-    let name = file.name.toLowerCase();
-    if (name.match(/\.(jpg|jpeg|png|gif)$/)) {
-      console.log(file);
-      this.setState({ image: file });
-    } else {
-      this.setState({ error: "Only image files are allowed!" });
-    }
+    window.cloudinary.openUploadWidget(
+      {
+        cloud_name: "pixo",
+        upload_preset: "zupqatkm",
+        folder: `${this.props.match.params.userid}/${
+          this.props.match.params.albumid
+        }`
+      },
+      (error, result) => {
+        console.log(result);
+        this.setState({
+          cover: result[0].public_id
+        });
+      }
+    );
     event.preventDefault();
   }
 
@@ -35,13 +42,12 @@ class CreateAlbum extends Component {
   }
 
   handleCreateAlbumSubmit(event) {
-    const data = new FormData();
-    data.append("albumId", this.props.match.params.albumid);
-    data.append("userId", this.props.match.params.userid);
-    data.append("title", this.state.title);
-    data.append("desc", this.state.desc);
-    data.append("file", this.state.image);
-    console.log(data);
+    let data = {
+      userId: this.props.match.params.userid,
+      title: this.state.title,
+      desc: this.state.desc,
+      cover: this.state.cover
+    };
 
     axios.post("/albums", data).then(response => {
       if (response.status === 200) {
@@ -77,11 +83,12 @@ class CreateAlbum extends Component {
               placeholder="Album Description"
               onChange={this.handleAlbumFieldsChange}
             />
-            <input
-              type="file"
-              name="image"
-              onChange={this.handleAlbumCoverUpload}
-            />
+            <button
+              className="upload-button"
+              onClick={this.handleAlbumCoverUpload}
+            >
+              Add Image
+            </button>
             <input className="btn submit" type="submit" value="Add Album" />
           </form>
         </div>

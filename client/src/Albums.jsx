@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import { CloudinaryContext, Image } from "cloudinary-react";
 import Button from "./Button";
 
 class Albums extends Component {
@@ -9,7 +10,8 @@ class Albums extends Component {
 
     this.state = {
       albums: [],
-      nextAlbumId: null
+      nextAlbumId: null,
+      width: 300
     };
   }
 
@@ -31,14 +33,13 @@ class Albums extends Component {
   }
 
   render() {
-    let albumGrid = this.state.albums.map((album, i) => {
+    let albums = this.state.albums.map((album, i) => {
       return (
         <div key={i}>
           <Link to={`/${this.props.match.params.userid}/albums/${album.id}`}>
-            <img src={album.cover} alt="album cover" />
-            <div className="overlay" />
-            <p className="text-overlay">
-              {album.title} <br /> {album.description}
+            <Image publicId={album.cover} width={this.state.width} />
+            <p className="image title">
+              {album.title} | {album.description}
             </p>
           </Link>
         </div>
@@ -53,7 +54,9 @@ class Albums extends Component {
           btnType="nav"
           name="Add Album"
         />
-        <div className="grid">{albumGrid}</div>
+        <CloudinaryContext className="grid" cloudName="pixo">
+          {albums}
+        </CloudinaryContext>
       </div>
     );
   }

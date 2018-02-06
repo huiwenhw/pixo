@@ -6,6 +6,9 @@ body {
 a {
   text-decoration: none; }
 
+.image.title {
+  color: #888; }
+
 .header {
   font-family: cursive;
   letter-spacing: 10px;
@@ -90,26 +93,12 @@ a {
 .grid {
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
-  justify-content: center; }
+  align-items: flex-end;
+  justify-content: center;
+  width: 90%;
+  margin: auto; }
   .grid > div {
     margin: 10px;
     position: relative; }
-  .grid .text-overlay {
-    margin: 0px;
-    color: white;
-    position: absolute;
-    bottom: 10px;
-    text-align: center;
-    width: 100%;
-    background: rgba(0, 0, 0, 0.7);
-    padding: 5px;
-    box-sizing: border-box; }
-  .grid img {
-    max-width: 300px; }
-
-#dropzone {
-  overflow: scroll;
-  padding: 0px 10px; }
 
 /*# sourceMappingURL=index.css.map */

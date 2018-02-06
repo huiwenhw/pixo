@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios";
-import Dropzone from "react-dropzone";
+import { CloudinaryContext, Image } from "cloudinary-react";
 import Button from "./Button";
 
 class Photos extends Component {
@@ -9,11 +9,11 @@ class Photos extends Component {
 
     this.state = {
       photos: [],
-      toUploadPhotos: []
+      render: true,
+      width: "300"
     };
 
-    this.handleDropPhotos = this.handleDropPhotos.bind(this);
-    this.handleUploadPhotos = this.handleUploadPhotos.bind(this);
+    this.handleUploadWidget = this.handleUploadWidget.bind(this);
   }
 
   componentDidMount() {
@@ -30,53 +30,46 @@ class Photos extends Component {
     });
   }
 
-  handleDropPhotos(files) {
-    console.log(files);
-    let areImages = true;
-    for (let i in files) {
-      let name = files[i].name.toLowerCase();
-      if (name.match(/\.!(jpg|jpeg|png|gif)$/)) {
-        this.setState({
-          error: "Only image files are allowed!"
-        });
-        areImages = false;
-        break;
+  handleUploadWidget(event) {
+    window.cloudinary.openUploadWidget(
+      {
+        cloud_name: "pixo",
+        upload_preset: "zupqatkm",
+        folder: `${this.props.match.params.userid}/${
+          this.props.match.params.albumid
+        }`
+      },
+      (error, result) => {
+        console.log(result);
+        let newFiles = [];
+        for (let i in result) {
+          newFiles.push({
+            path: result[i].public_id,
+            name: result[i].original_filename
+          });
+        }
+        axios
+          .post("/uploadPhotos", {
+            albumId: this.props.match.params.albumid,
+            files: newFiles
+          })
+          .then(response => {
+            if (response.status === 200) {
+              this.setState({ render: !this.state.render });
+            }
+            console.log(response);
+          });
       }
-    }
-    if (areImages) {
-      this.setState({ toUploadPhotos: files });
-    }
-  }
-
-  handleUploadPhotos(event) {
-    let photosDict = this.state.photos.reduce((map, obj) => {
-      map[obj.name] = obj;
-      return map;
-    }, {});
-
-    const data = new FormData();
-    data.append("albumId", this.props.match.params.albumid);
-    data.append("userId", this.props.match.params.userid);
-    for (let i in this.state.toUploadPhotos) {
-      if (!photosDict[this.state.toUploadPhotos[i].name]) {
-        data.append("files", this.state.toUploadPhotos[i]);
-      }
-    }
-
-    axios.post("/uploadPhotos", data).then(response => {
-      if (response.status === 200) {
-        this.setState({ toUploadPhotos: [] });
-      }
-      console.log(response);
-    });
+    );
     event.preventDefault();
   }
 
   render() {
-    let photoGrid = this.state.photos.map((photo, i) => {
+    let photos = this.state.photos.map((photo, i) => {
       return (
         <div key={i}>
-          <img src={photo.path} alt={photo.name} />
+          <Image publicId={photo.path} width={this.state.width} />
+          <p className="image title"> {photo.name} </p>
         </div>
       );
     });
@@ -87,25 +80,12 @@ class Photos extends Component {
           btnType="nav"
           name="Home"
         />
-        <div className="grid">
-          <form onSubmit={this.handleUploadPhotos}>
-            <Dropzone
-              id="dropzone"
-              onDrop={this.handleDropPhotos}
-              multiple
-              accept="image/*"
-            >
-              <p>Drop your files or click here to add photos!</p>
-              <ul>
-                {this.state.toUploadPhotos.map((image, i) => {
-                  return <li key={i}> {image.name} </li>;
-                })}
-              </ul>
-            </Dropzone>
-            <input className="btn submit" type="submit" value="Add photos" />
-          </form>
-          {photoGrid}
-        </div>
+        <button className="btn submit" onClick={this.handleUploadWidget}>
+          Add Photos
+        </button>
+        <CloudinaryContext className="grid" cloudName="pixo">
+          {photos}
+        </CloudinaryContext>
       </div>
     );
   }
