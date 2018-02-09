@@ -1,14 +1,18 @@
 import React, { Component } from "react";
 import { Redirect } from "react-router-dom";
 import axios from "axios";
+import { CloudinaryContext, Image } from "cloudinary-react";
 import Button from "./Button";
+import Error from "./Error";
 
 class CreateAlbum extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      albumsView: false
+      albumsView: false,
+      error: "",
+      width: 300
     };
 
     this.handleAlbumCoverUpload = this.handleAlbumCoverUpload.bind(this);
@@ -21,7 +25,7 @@ class CreateAlbum extends Component {
       {
         cloud_name: "pixo",
         upload_preset: "zupqatkm",
-        folder: `${this.props.match.params.userid}/${
+        folder: `${this.props.match.params.userId}/${
           this.props.match.params.albumid
         }`
       },
@@ -29,7 +33,8 @@ class CreateAlbum extends Component {
         console.log(result);
         if (result) {
           this.setState({
-            cover: result[0].public_id
+            cover: result[0].public_id,
+            filename: result[0].original_filename
           });
         } else {
           console.log(error);
@@ -47,29 +52,36 @@ class CreateAlbum extends Component {
 
   handleCreateAlbumSubmit(event) {
     let data = {
-      userId: this.props.match.params.userid,
+      userId: this.props.match.params.userId,
       title: this.state.title,
       desc: this.state.desc,
-      cover: this.state.cover
+      filepath: this.state.cover,
+      filename: this.state.filename
     };
 
-    axios.post("/albums", data).then(response => {
-      if (response.status === 200) {
-        this.setState({ albumsView: true });
-      }
-      console.log(response);
-    });
+    if (!this.state.title) {
+      this.setState({ error: "Please fill in your album's title!" });
+    } else if (!this.state.cover) {
+      this.setState({ error: "Please choose a cover photo for your album!" });
+    } else {
+      axios.post("/albums", data).then(response => {
+        if (response.status === 200) {
+          this.setState({ albumsView: true });
+        }
+        console.log(response);
+      });
+    }
     event.preventDefault();
   }
 
   render() {
     if (this.state.albumsView) {
-      return <Redirect to={`/${this.props.match.params.userid}/albums`} />;
+      return <Redirect to={`/${this.props.match.params.userId}/albums`} />;
     }
     return (
       <div>
         <Button
-          link={`/${this.props.match.params.userid}/albums`}
+          link={`/${this.props.match.params.userId}/albums`}
           btnType="nav"
           name="Home"
         />
@@ -88,15 +100,21 @@ class CreateAlbum extends Component {
               placeholder="Album Description"
               onChange={this.handleAlbumFieldsChange}
             />
-            <input
-              type="button"
-              className="upload-button"
+            <button
+              className="btn upload-button"
               onClick={this.handleAlbumCoverUpload}
-              value="Add Image"
-            />
+            >
+              Add Image
+            </button>
+            {this.state.cover && (
+              <CloudinaryContext className="grid" cloudName="pixo">
+                <Image publicId={this.state.cover} width={this.state.width} />
+              </CloudinaryContext>
+            )}
             <button className="btn submit" type="submit">
               Add Album
             </button>
+            <Error msg={this.state.error} />
           </form>
         </div>
       </div>

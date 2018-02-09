@@ -23,7 +23,11 @@ app.post("/user", (req, res) => {
       username: req.body.username,
       password: req.body.password
     })
-    .then(() => res.sendStatus(200));
+    .then(({ success, error, userId }) => {
+      console.log(success, error, userId);
+      if (success) res.status(200).send({ success: success, userId: userId });
+      else res.status(200).send({ success: success, error: error });
+    });
 });
 app.post("/login", (req, res) => {
   console.log("post request /login");
@@ -33,9 +37,21 @@ app.post("/login", (req, res) => {
       username: req.body.username,
       password: req.body.password
     })
-    .then(({ success, userId }) => {
-      if (success) res.status(200).send({ userId: userId });
-      else res.sendStatus(401);
+    .then(({ success, error, userId }) => {
+      if (success) res.status(200).send({ success: success, userId: userId });
+      else res.status(200).send({ success: success, error: error });
+    });
+});
+app.get("/album/:albumId", (req, res) => {
+  console.log("get /album");
+  console.log(req.params);
+  store
+    .getAlbum({
+      albumId: req.params.albumId
+    })
+    .then(({ album }) => {
+      console.log(album);
+      res.status(200).send({ album: album });
     });
 });
 app.post("/albums", (req, res) => {
@@ -45,8 +61,9 @@ app.post("/albums", (req, res) => {
     .createAlbum({
       title: req.body.title,
       desc: req.body.desc,
-      cover: req.body.cover,
-      userId: req.body.userId
+      cover: req.body.filepath,
+      userId: req.body.userId,
+      filename: req.body.filename
     })
     .then(({ albumId }) => {
       res.status(200).send({ albumId: albumId });
@@ -72,12 +89,12 @@ app.get("/getAlbumId", (req, res) => {
     res.status(200).send({ albumId: albumId });
   });
 });
-app.get("/:userid/albums", (req, res) => {
-  console.log("get request /:userid/albums");
+app.get("/:userId/albums", (req, res) => {
+  console.log("get request /:userId/albums");
   console.log(req.params);
   store
     .getAlbums({
-      userId: req.params.userid
+      userId: req.params.userId
     })
     .then(({ albums }) => {
       res.status(200).send({ albums: albums });

@@ -47,6 +47,7 @@ a {
   font-size: 20px;
   font-weight: lighter;
   letter-spacing: 5px;
+  text-align: center;
 }
 
 .container {
@@ -87,6 +88,11 @@ a {
   align-items: center;
   justify-content: center;
   height: calc(100vh - 80px);
+}
+
+.error {
+  color: red;
+  font-size: 13px;
 }
 
 .form-wrapper {

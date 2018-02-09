@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Redirect } from "react-router-dom";
 import axios from "axios";
+import Error from "./Error";
 import Header from "./Header";
 
 class NewUser extends Component {
@@ -8,6 +9,7 @@ class NewUser extends Component {
     super(props);
 
     this.state = {
+      error: "",
       loggedIn: false
     };
 
@@ -29,14 +31,18 @@ class NewUser extends Component {
       })
       .then(response => {
         console.log(response);
-        this.setState({ loggedIn: true });
+        if (response.data.success) {
+          this.setState({ loggedIn: true, userId: response.data.userId });
+        } else {
+          this.setState({ loggedIn: false, error: response.data.error });
+        }
       });
     event.preventDefault();
   }
 
   render() {
     if (this.state.loggedIn === true) {
-      return <Redirect to={"/"} />;
+      return <Redirect to={`/${this.state.userId}/albums`} />;
     }
     return (
       <div className="center login">
@@ -59,6 +65,7 @@ class NewUser extends Component {
               Sign Up
             </button>
           </form>
+          <Error msg={this.state.error} />
         </div>
       </div>
     );

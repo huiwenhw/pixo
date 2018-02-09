@@ -8,6 +8,8 @@ class Photos extends Component {
     super(props);
 
     this.state = {
+      albumTitle: "",
+      albumDesc: "",
       photos: [],
       render: true,
       width: "300"
@@ -28,6 +30,15 @@ class Photos extends Component {
         });
       }
     });
+    axios.get(`/album/${id}`).then(response => {
+      console.log(response);
+      if (response.status === 200) {
+        this.setState({
+          albumTitle: response.data.album.title,
+          albumDesc: response.data.album.description
+        });
+      }
+    });
   }
 
   handleUploadWidget(event) {
@@ -35,7 +46,7 @@ class Photos extends Component {
       {
         cloud_name: "pixo",
         upload_preset: "zupqatkm",
-        folder: `${this.props.match.params.userid}/${
+        folder: `${this.props.match.params.userId}/${
           this.props.match.params.albumid
         }`
       },
@@ -76,13 +87,15 @@ class Photos extends Component {
     return (
       <div>
         <Button
-          link={`/${this.props.match.params.userid}/albums`}
+          link={`/${this.props.match.params.userId}/albums`}
           btnType="nav"
           name="Home"
         />
         <button className="btn submit" onClick={this.handleUploadWidget}>
           Add Photos
         </button>
+        <p className="title"> {this.state.albumTitle} </p>
+        <p className="title"> {this.state.albumDesc} </p>
         <CloudinaryContext className="grid" cloudName="pixo">
           {photos}
         </CloudinaryContext>

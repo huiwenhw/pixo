@@ -4,30 +4,57 @@ const knex = require("knex")(require("./knexfile"));
 module.exports = {
   saltHashPassword,
   createUser({ username, password }) {
-    console.log(`Add user ${username} with password ${password}`);
+    console.log(`Add user ${username}`);
     const { salt, hash } = saltHashPassword({ password });
-    return knex("user").insert({
-      salt,
-      encrypted_password: hash,
-      username
-    });
-    // .debug();
+    return knex("user")
+      .where({ username })
+      .then(([user]) => {
+        if (user)
+          return {
+            success: false,
+            error:
+              "The username you selected exists. Please try a different one!"
+          };
+        if (!user) {
+          return knex("user")
+            .insert({
+              salt,
+              encrypted_password: hash,
+              username
+            })
+            .returning("id")
+            .then(([id]) => {
+              console.log(id);
+              return { success: true, userId: id };
+            });
+        }
+      });
   },
   authenticate({ username, password }) {
     console.log(`Authenticating user ${username}`);
     return knex("user")
       .where({ username })
       .then(([user]) => {
-        if (!user) return { success: false };
+        if (!user)
+          return { success: false, error: "User not found. Please try again!" };
         const { hash } = saltHashPassword({
           password,
           salt: user.salt
         });
-        return { success: hash === user.encrypted_password, userId: user.id };
+        if (hash === user.encrypted_password) {
+          return { success: true, userId: user.id };
+        } else {
+          return {
+            success: false,
+            error: "Authentication failed. Please try again!"
+          };
+        }
       });
   },
-  createAlbum({ title, desc, cover, userId }) {
-    console.log(`creating album ${title}, ${desc}, ${cover}, ${userId}`);
+  createAlbum({ title, desc, cover, userId, filename }) {
+    console.log(
+      `creating album ${title}, ${desc}, ${cover}, ${userId}, ${filename}`
+    );
     return knex("albums")
       .insert({
         title,
@@ -37,6 +64,12 @@ module.exports = {
       })
       .returning("id")
       .then(([id]) => {
+        return knex("photos").insert({
+          name: filename,
+          path: cover,
+          description: "",
+          album_id: id
+        });
         console.log(`album ${id}`);
         return { albumId: id };
       });
@@ -56,6 +89,15 @@ module.exports = {
         } else {
           return { albumId: 0 };
         }
+      });
+  },
+  getAlbum({ albumId }) {
+    return knex("albums")
+      .where("id", albumId)
+      .select("title", "description")
+      .then(([res]) => {
+        console.log(res);
+        return { album: res };
       });
   },
   getAlbums({ userId }) {

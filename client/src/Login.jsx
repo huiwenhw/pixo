@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Link, Redirect } from "react-router-dom";
 import axios from "axios";
+import Error from "./Error";
 import Header from "./Header";
 
 class Login extends Component {
@@ -8,10 +9,10 @@ class Login extends Component {
     super(props);
 
     this.state = {
-      username: null,
+      error: "",
+      userId: null,
       password: null,
-      loggedIn: null,
-      userId: null
+      loggedIn: null
     };
 
     this.handleFieldsChange = this.handleFieldsChange.bind(this);
@@ -32,8 +33,10 @@ class Login extends Component {
       })
       .then(response => {
         console.log(response);
-        if (response.status === 200) {
+        if (response.data.success) {
           this.setState({ loggedIn: true, userId: response.data.userId });
+        } else {
+          this.setState({ error: response.data.error });
         }
       });
     event.preventDefault();
@@ -64,6 +67,7 @@ class Login extends Component {
               Login
             </button>
           </form>
+          <Error msg={this.state.error} />
           <Link to={"/newuser"}>
             Don't have an account yet? <span>Sign Up</span>
           </Link>
