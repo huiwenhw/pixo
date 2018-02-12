@@ -49,8 +49,8 @@ class Login extends Component {
     return (
       <div className="center login">
         <div className="form-wrapper login">
+          <Header />
           <form className="form" onSubmit={this.handleLoginSubmit}>
-            <Header />
             <input
               type="text"
               name="username"

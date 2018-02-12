@@ -42,19 +42,30 @@ app.post("/login", (req, res) => {
       else res.status(200).send({ success: success, error: error });
     });
 });
+app.get("/:userId/albums", (req, res) => {
+  console.log("get request /:userId/albums");
+  console.log(req.params);
+  store
+    .getAlbums({
+      userId: req.params.userId
+    })
+    .then(({ albums }) => {
+      res.status(200).send({ albums: albums });
+    });
+});
 app.get("/album/:albumId", (req, res) => {
-  console.log("get /album");
+  console.log("get /album/:albumId");
   console.log(req.params);
   store
     .getAlbum({
       albumId: req.params.albumId
     })
-    .then(({ album }) => {
+    .then(({ album, photos }) => {
       console.log(album);
-      res.status(200).send({ album: album });
+      res.status(200).send({ album: album, photos: photos });
     });
 });
-app.post("/albums", (req, res) => {
+app.post("/album", (req, res) => {
   console.log("post request /albums");
   console.log(req.body);
   store
@@ -65,11 +76,11 @@ app.post("/albums", (req, res) => {
       userId: req.body.userId,
       filename: req.body.filename
     })
-    .then(({ albumId }) => {
-      res.status(200).send({ albumId: albumId });
+    .then(() => {
+      res.sendStatus(200);
     });
 });
-app.post("/uploadPhotos", (req, res) => {
+app.post("/photos", (req, res) => {
   console.log("post req /photos");
   console.log(req.body);
   let albumId = req.body.albumId;
@@ -83,35 +94,6 @@ app.post("/uploadPhotos", (req, res) => {
     };
   });
   store.uploadPhotos(photos).then(() => res.sendStatus(200));
-});
-app.get("/getAlbumId", (req, res) => {
-  store.getAlbumId().then(({ albumId }) => {
-    res.status(200).send({ albumId: albumId });
-  });
-});
-app.get("/:userId/albums", (req, res) => {
-  console.log("get request /:userId/albums");
-  console.log(req.params);
-  store
-    .getAlbums({
-      userId: req.params.userId
-    })
-    .then(({ albums }) => {
-      res.status(200).send({ albums: albums });
-    });
-});
-app.get("/:albumid/getPhotos", (req, res) => {
-  console.log("get request /:albumid/getPhotos");
-  console.log(`photos ${req.params}`);
-  store
-    .getPhotos({
-      albumId: req.params.albumid
-    })
-    .then(({ photos }) => {
-      console.log("photos");
-      console.log(photos);
-      res.status(200).send({ photos: photos });
-    });
 });
 
 const port = process.env.PORT || 5000;

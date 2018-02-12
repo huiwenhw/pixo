@@ -1,9 +1,10 @@
 import React, { Component } from "react";
-import { Redirect } from "react-router-dom";
+import { Redirect, Link } from "react-router-dom";
 import axios from "axios";
 import { CloudinaryContext, Image } from "cloudinary-react";
 import Button from "./Button";
 import Error from "./Error";
+import Title from "./Title";
 
 class CreateAlbum extends Component {
   constructor(props) {
@@ -64,7 +65,7 @@ class CreateAlbum extends Component {
     } else if (!this.state.cover) {
       this.setState({ error: "Please choose a cover photo for your album!" });
     } else {
-      axios.post("/albums", data).then(response => {
+      axios.post("/album", data).then(response => {
         if (response.status === 200) {
           this.setState({ albumsView: true });
         }
@@ -80,14 +81,12 @@ class CreateAlbum extends Component {
     }
     return (
       <div>
-        <Button
-          link={`/${this.props.match.params.userId}/albums`}
-          btnType="nav"
-          name="Home"
-        />
+        <Link to={`/${this.props.match.params.userId}/albums`}>
+          <Button text="Home" />
+        </Link>
+        <Title text="CREATE ALBUM" />
         <div className="form-wrapper">
           <form className="form" onSubmit={this.handleCreateAlbumSubmit}>
-            <p className="title"> CREATE ALBUM </p>
             <input
               type="text"
               name="title"
@@ -100,22 +99,19 @@ class CreateAlbum extends Component {
               placeholder="Album Description"
               onChange={this.handleAlbumFieldsChange}
             />
-            <button
-              className="btn upload-button"
-              onClick={this.handleAlbumCoverUpload}
-            >
-              Add Image
-            </button>
+            <Button
+              text="Add Image"
+              extraClass="upload-button"
+              handler={this.handleAlbumCoverUpload}
+            />
             {this.state.cover && (
               <CloudinaryContext className="grid" cloudName="pixo">
                 <Image publicId={this.state.cover} width={this.state.width} />
               </CloudinaryContext>
             )}
-            <button className="btn submit" type="submit">
-              Add Album
-            </button>
-            <Error msg={this.state.error} />
+            <Button type="submit" text="Add Album" />
           </form>
+          <Error msg={this.state.error} />
         </div>
       </div>
     );

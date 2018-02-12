@@ -1,7 +1,9 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 import axios from "axios";
 import { CloudinaryContext, Image } from "cloudinary-react";
 import Button from "./Button";
+import Title from "./Title";
 
 class Photos extends Component {
   constructor(props) {
@@ -20,28 +22,20 @@ class Photos extends Component {
 
   componentDidMount() {
     let id = this.props.match.params.albumid;
-    axios.get(`/${id}/getPhotos`).then(response => {
-      console.log(response);
-      if (response.status === 200) {
-        this.setState({ photos: response.data.photos });
-      } else {
-        this.setState({
-          error: "Unable to show album photos, please try again later."
-        });
-      }
-    });
     axios.get(`/album/${id}`).then(response => {
       console.log(response);
       if (response.status === 200) {
         this.setState({
           albumTitle: response.data.album.title,
-          albumDesc: response.data.album.description
+          albumDesc: response.data.album.description,
+          photos: response.data.photos
         });
       }
     });
   }
 
-  handleUploadWidget(event) {
+  async handleUploadWidget(event) {
+    event.preventDefault();
     window.cloudinary.openUploadWidget(
       {
         cloud_name: "pixo",
@@ -60,7 +54,7 @@ class Photos extends Component {
           });
         }
         axios
-          .post("/uploadPhotos", {
+          .post("/photos", {
             albumId: this.props.match.params.albumid,
             files: newFiles
           })
@@ -72,7 +66,6 @@ class Photos extends Component {
           });
       }
     );
-    event.preventDefault();
   }
 
   render() {
@@ -86,16 +79,12 @@ class Photos extends Component {
     });
     return (
       <div>
-        <Button
-          link={`/${this.props.match.params.userId}/albums`}
-          btnType="nav"
-          name="Home"
-        />
-        <button className="btn submit" onClick={this.handleUploadWidget}>
-          Add Photos
-        </button>
-        <p className="title"> {this.state.albumTitle} </p>
-        <p className="title"> {this.state.albumDesc} </p>
+        <Link to={`/${this.props.match.params.userId}/albums`}>
+          <Button text="Home" />
+        </Link>
+        <Button handler={this.handleUploadWidget} text="Add Photos" />
+        <Title text={this.state.albumTitle} />
+        <Title text={this.state.albumDesc} />
         <CloudinaryContext className="grid" cloudName="pixo">
           {photos}
         </CloudinaryContext>

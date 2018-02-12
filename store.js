@@ -9,13 +9,13 @@ module.exports = {
     return knex("user")
       .where({ username })
       .then(([user]) => {
-        if (user)
+        if (user) {
           return {
             success: false,
             error:
               "The username you selected exists. Please try a different one!"
           };
-        if (!user) {
+        } else {
           return knex("user")
             .insert({
               salt,
@@ -77,27 +77,24 @@ module.exports = {
   uploadPhotos(photos) {
     return knex("photos").insert(photos);
   },
-  getAlbumId() {
-    return knex("albums")
-      .orderBy("id", "desc")
-      .limit(1)
-      .then(([album]) => {
-        console.log("get album id");
-        console.log(album);
-        if (album) {
-          return { albumId: album.id };
-        } else {
-          return { albumId: 0 };
-        }
-      });
-  },
   getAlbum({ albumId }) {
     return knex("albums")
       .where("id", albumId)
       .select("title", "description")
-      .then(([res]) => {
-        console.log(res);
-        return { album: res };
+      .then(([album]) => {
+        console.log(album);
+        return album;
+      })
+      .then(album => {
+        console.log("in getAlbum ", album);
+        return knex("photos")
+          .where("album_id", albumId)
+          .select("id", "name", "description", "path")
+          .then(res => {
+            console.log("get photos");
+            console.log(res);
+            return { album: album, photos: res };
+          });
       });
   },
   getAlbums({ userId }) {
@@ -108,17 +105,6 @@ module.exports = {
         console.log("get albums");
         console.log(res);
         return { albums: res };
-      });
-  },
-  getPhotos({ albumId }) {
-    console.log("get photos in store js " + albumId);
-    return knex("photos")
-      .where("album_id", albumId)
-      .select("id", "name", "description", "path")
-      .then(res => {
-        console.log("get photos");
-        console.log(res);
-        return { photos: res };
       });
   }
 };

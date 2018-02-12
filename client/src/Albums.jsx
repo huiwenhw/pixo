@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import { CloudinaryContext, Image } from "cloudinary-react";
 import Button from "./Button";
+import Title from "./Title";
 
 class Albums extends Component {
   constructor(props) {
@@ -10,7 +11,6 @@ class Albums extends Component {
 
     this.state = {
       albums: [],
-      nextAlbumId: null,
       width: 300
     };
   }
@@ -21,13 +21,6 @@ class Albums extends Component {
       console.log(response);
       if (response.status === 200) {
         this.setState({ albums: response.data.albums });
-      }
-    });
-    axios.get("/getAlbumId").then(response => {
-      if (response.status === 200) {
-        this.setState({
-          nextAlbumId: response.data.albumId + 1
-        });
       }
     });
   }
@@ -47,14 +40,10 @@ class Albums extends Component {
     });
     return (
       <div id="home">
-        <Button
-          link={`/${this.props.match.params.userId}/albums/create/${
-            this.state.nextAlbumId
-          }`}
-          btnType="nav"
-          name="Add Album"
-        />
-        <p className="title"> ALBUMS </p>
+        <Link to={`/${this.props.match.params.userId}/albums/create`}>
+          <Button text="Add Album" />
+        </Link>
+        <Title text="ALBUMS" />
         <CloudinaryContext className="grid" cloudName="pixo">
           {albums}
         </CloudinaryContext>
