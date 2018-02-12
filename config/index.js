@@ -1,7 +1,4 @@
 module.exports = {
-  app: {
-    port: 3000
-  },
   cloudinary: {
     cloud_name: process.env.CLOUD_NAME,
     api_key: process.env.CLOUD_APIKEY,

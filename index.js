@@ -18,6 +18,7 @@ app.use(express.static(path.join(__dirname, "client/build")));
 app.use(bodyParser.json());
 
 app.post("/user", (req, res) => {
+  console.log("post request /user");
   store
     .createUser({
       username: req.body.username,
@@ -31,7 +32,6 @@ app.post("/user", (req, res) => {
 });
 app.post("/login", (req, res) => {
   console.log("post request /login");
-  console.log(req.body);
   store
     .authenticate({
       username: req.body.username,

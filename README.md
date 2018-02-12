@@ -1,15 +1,44 @@
 # pixo
-Photo Gallery built using React, NodeJs, Express and MySQL 
+> Photo Gallery built using React, NodeJs, Express and MySQL 
 
-## Steps to get project up and running:
-* git clone `https://github.com/huiwenhw/pixo`
-* `cd pixo` and do `yarn install` 
-* `cd client` and do `yarn install`
-* start MySQL daemon: `brew services start mysql`
-* In pixo/knexfile.js: Change user, password and database to your own credentials
-* do `knex migrate:latest`
-* start express server: `nodemon .`
-* and in another terminal: in `/client folder`, do `yarn start` to start React
+## Usage
+Clone this repo
+```
+git clone https://github.com/huiwenhw/pixo
+cd pixo
+```
 
-Note: If you edit the index.scss file, make sure to do 
-* `yarn run sass`: this will watch the index.scss file and compile it to index.css
+Install nodemon globally 
+```
+yarn add nodemon -g
+```
+
+Install server and client dependencies 
+```
+yarn 
+cd client 
+yarn 
+```
+
+Configure MySQL
+```
+brew services start mysql
+```
+In pixo/knexfile.js, change connection string to 
+```
+connection: {
+    user: "your_db_user",
+    password: "your_db_password",
+    database: "your_db_name"
+}
+```
+
+Start server and client at the same time 
+```
+yarn dev 
+```
+
+Compile index.scss file (this will watch index.scss and compile it to index.css) 
+```
+yarn sass
+```
