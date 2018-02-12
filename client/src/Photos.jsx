@@ -59,9 +59,6 @@ class Photos extends Component {
             files: newFiles
           })
           .then(response => {
-            if (response.status === 200) {
-              this.setState({ render: !this.state.render });
-            }
             console.log(response);
           });
       }

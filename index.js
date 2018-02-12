@@ -49,8 +49,8 @@ app.get("/:userId/albums", (req, res) => {
     .getAlbums({
       userId: req.params.userId
     })
-    .then(({ albums }) => {
-      res.status(200).send({ albums: albums });
+    .then(({ albumId, albums }) => {
+      res.status(200).send({ albumId: albumId, albums: albums });
     });
 });
 app.get("/album/:albumId", (req, res) => {

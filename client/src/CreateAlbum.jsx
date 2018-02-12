@@ -27,7 +27,7 @@ class CreateAlbum extends Component {
         cloud_name: "pixo",
         upload_preset: "zupqatkm",
         folder: `${this.props.match.params.userId}/${
-          this.props.match.params.albumid
+          this.props.match.params.albumId
         }`
       },
       (error, result) => {

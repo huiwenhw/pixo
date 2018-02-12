@@ -10,7 +10,11 @@ const Home = () => {
     <div className="container">
       <Header />
       <Switch>
-        <Route exact path="/:userId/albums/create" component={CreateAlbum} />
+        <Route
+          exact
+          path="/:userId/albums/create/:albumId"
+          component={CreateAlbum}
+        />
         <Route exact path="/:userId/albums/:albumid" component={Photos} />
         <Route exact path="/:userId/albums" component={Albums} />
       </Switch>

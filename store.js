@@ -99,12 +99,26 @@ module.exports = {
   },
   getAlbums({ userId }) {
     return knex("albums")
-      .where("user_id", userId)
-      .select("id", "title", "description", "cover")
-      .then(res => {
-        console.log("get albums");
-        console.log(res);
-        return { albums: res };
+      .orderBy("id", "desc")
+      .limit(1)
+      .then(([album]) => {
+        console.log("get album id");
+        console.log(album);
+        if (album) {
+          return album.id;
+        } else {
+          return 0;
+        }
+      })
+      .then(albumId => {
+        return knex("albums")
+          .where("user_id", userId)
+          .select("id", "title", "description", "cover")
+          .then(res => {
+            console.log("get albums");
+            console.log(res);
+            return { albumId: albumId, albums: res };
+          });
       });
   }
 };

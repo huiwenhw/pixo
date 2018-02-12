@@ -10,6 +10,7 @@ class Albums extends Component {
     super(props);
 
     this.state = {
+      albumId: 0,
       albums: [],
       width: 300
     };
@@ -20,7 +21,10 @@ class Albums extends Component {
     axios.get(`/${userId}/albums`).then(response => {
       console.log(response);
       if (response.status === 200) {
-        this.setState({ albums: response.data.albums });
+        this.setState({
+          albumId: response.data.albumId,
+          albums: response.data.albums
+        });
       }
     });
   }
@@ -40,7 +44,11 @@ class Albums extends Component {
     });
     return (
       <div id="home">
-        <Link to={`/${this.props.match.params.userId}/albums/create`}>
+        <Link
+          to={`/${this.props.match.params.userId}/albums/create/${
+            this.state.albumId
+          }`}
+        >
           <Button text="Add Album" />
         </Link>
         <Title text="ALBUMS" />

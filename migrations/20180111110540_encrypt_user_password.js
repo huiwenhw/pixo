@@ -27,7 +27,7 @@ exports.up = function(knex, Promise) {
 exports.down = function(knex, Promise) {
   return knex.schema.table("user", t => {
     t.dropColumn("salt");
-    t.dropColumn("encryped_password");
+    t.dropColumn("encrypted_password");
     t.string("password").notNullable();
   });
 };
