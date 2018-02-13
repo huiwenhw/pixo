@@ -18,9 +18,14 @@ class Photos extends Component {
     };
 
     this.handleUploadWidget = this.handleUploadWidget.bind(this);
+    this.getPhotos = this.getPhotos.bind(this);
   }
 
   componentDidMount() {
+    this.getPhotos();
+  }
+
+  getPhotos() {
     let id = this.props.match.params.albumid;
     axios.get(`/album/${id}`).then(response => {
       console.log(response);
@@ -34,7 +39,7 @@ class Photos extends Component {
     });
   }
 
-  async handleUploadWidget(event) {
+  handleUploadWidget(event) {
     event.preventDefault();
     window.cloudinary.openUploadWidget(
       {
@@ -60,6 +65,7 @@ class Photos extends Component {
           })
           .then(response => {
             console.log(response);
+            this.getPhotos();
           });
       }
     );

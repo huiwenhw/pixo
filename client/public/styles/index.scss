@@ -58,6 +58,8 @@ a {
 .image {
   &.desc {
     color: $darkGrey;
+    height: 50px;
+    overflow: scroll;
   }
 }
 
@@ -136,7 +138,8 @@ a {
   margin-top: 40px;
 
   > div {
-    margin: 0px 20px;
+    margin: 20px;
     position: relative;
+    width: 300px;
   }
 }

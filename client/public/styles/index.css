@@ -17,7 +17,9 @@ a {
   margin: 30px auto; }
 
 .image.desc {
-  color: #7f7f7f; }
+  color: #7f7f7f;
+  height: 50px;
+  overflow: scroll; }
 
 .header {
   font-family: cursive;
@@ -98,7 +100,8 @@ a {
   justify-content: center;
   margin-top: 40px; }
   .grid > div {
-    margin: 0px 20px;
-    position: relative; }
+    margin: 20px;
+    position: relative;
+    width: 300px; }
 
 /*# sourceMappingURL=index.css.map */
