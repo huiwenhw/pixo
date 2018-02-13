@@ -1,9 +1,10 @@
 import React, { Component } from "react";
-import { Redirect, Link } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import axios from "axios";
 import { CloudinaryContext, Image } from "cloudinary-react";
 import Button from "./Button";
 import Error from "./Error";
+import Navbar from "./Navbar";
 import Title from "./Title";
 
 class CreateAlbum extends Component {
@@ -19,6 +20,7 @@ class CreateAlbum extends Component {
     this.handleAlbumCoverUpload = this.handleAlbumCoverUpload.bind(this);
     this.handleAlbumFieldsChange = this.handleAlbumFieldsChange.bind(this);
     this.handleCreateAlbumSubmit = this.handleCreateAlbumSubmit.bind(this);
+    this.handleLogout = this.handleLogout.bind(this);
   }
 
   handleAlbumCoverUpload(event) {
@@ -75,15 +77,27 @@ class CreateAlbum extends Component {
     event.preventDefault();
   }
 
+  handleLogout(event) {
+    event.preventDefault();
+    axios.get("/logout").then(response => {
+      this.setState({ loggedIn: false });
+    });
+  }
+
   render() {
+    if (this.state.loggedIn === false) {
+      return <Redirect to="/" />;
+    }
     if (this.state.albumsView) {
       return <Redirect to={`/${this.props.match.params.userId}/albums`} />;
     }
     return (
       <div>
-        <Link to={`/${this.props.match.params.userId}/albums`}>
-          <Button text="Home" />
-        </Link>
+        <Navbar
+          home={true}
+          userId={this.props.match.params.userId}
+          logoutFn={this.handleLogout}
+        />
         <Title text="CREATE ALBUM" />
         <div className="form-wrapper">
           <form className="form" onSubmit={this.handleCreateAlbumSubmit}>

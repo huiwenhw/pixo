@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import { Redirect, Link } from "react-router-dom";
 import axios from "axios";
 import { CloudinaryContext, Image } from "cloudinary-react";
-import Button from "./Button";
+import Navbar from "./Navbar";
 import Title from "./Title";
 
 class Albums extends Component {
@@ -12,24 +12,39 @@ class Albums extends Component {
     this.state = {
       albumId: 0,
       albums: [],
+      loggedIn: true,
       width: 300
     };
+
+    this.handleLogout = this.handleLogout.bind(this);
   }
 
   componentDidMount() {
-    let userId = this.props.match.params.userId;
-    axios.get(`/${userId}/albums`).then(response => {
-      console.log(response);
-      if (response.status === 200) {
+    axios
+      .get(`/albums`)
+      .then(response => {
+        console.log(response);
         this.setState({
           albumId: response.data.albumId,
           albums: response.data.albums
         });
-      }
+      })
+      .catch(error => {
+        console.log(error.response.data);
+      });
+  }
+
+  handleLogout(event) {
+    event.preventDefault();
+    axios.get("/logout").then(response => {
+      this.setState({ loggedIn: false });
     });
   }
 
   render() {
+    if (this.state.loggedIn === false) {
+      return <Redirect to="/" />;
+    }
     let albums = this.state.albums.map((album, i) => {
       return (
         <div key={i}>
@@ -44,13 +59,12 @@ class Albums extends Component {
     });
     return (
       <div id="home">
-        <Link
-          to={`/${this.props.match.params.userId}/albums/create/${
-            this.state.albumId
-          }`}
-        >
-          <Button text="Add Album" />
-        </Link>
+        <Navbar
+          addAlbum={true}
+          userId={this.props.match.params.userId}
+          albumId={this.state.albumId}
+          logoutFn={this.handleLogout}
+        />
         <Title text="ALBUMS" />
         <CloudinaryContext className="grid" cloudName="pixo">
           {albums}

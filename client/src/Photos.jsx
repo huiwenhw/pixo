@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import axios from "axios";
 import { CloudinaryContext, Image } from "cloudinary-react";
-import Button from "./Button";
+import Navbar from "./Navbar";
 import Title from "./Title";
 
 class Photos extends Component {
@@ -17,8 +17,9 @@ class Photos extends Component {
       width: "300"
     };
 
-    this.handleUploadWidget = this.handleUploadWidget.bind(this);
     this.getPhotos = this.getPhotos.bind(this);
+    this.handleUploadWidget = this.handleUploadWidget.bind(this);
+    this.handleLogout = this.handleLogout.bind(this);
   }
 
   componentDidMount() {
@@ -71,7 +72,17 @@ class Photos extends Component {
     );
   }
 
+  handleLogout(event) {
+    event.preventDefault();
+    axios.get("/logout").then(response => {
+      this.setState({ loggedIn: false });
+    });
+  }
+
   render() {
+    if (this.state.loggedIn === false) {
+      return <Redirect to="/" />;
+    }
     let photos = this.state.photos.map((photo, i) => {
       return (
         <div key={i}>
@@ -82,10 +93,13 @@ class Photos extends Component {
     });
     return (
       <div>
-        <Link to={`/${this.props.match.params.userId}/albums`}>
-          <Button text="Home" />
-        </Link>
-        <Button handler={this.handleUploadWidget} text="Add Photos" />
+        <Navbar
+          home={true}
+          photos={true}
+          handlerFn={this.handleUploadWidget}
+          userId={this.props.match.params.userId}
+          logoutFn={this.handleLogout}
+        />
         <Title text={this.state.albumTitle} />
         <Title text={this.state.albumDesc} />
         <CloudinaryContext className="grid" cloudName="pixo">
